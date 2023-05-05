@@ -37,11 +37,11 @@ public class AdminHomePanel extends javax.swing.JPanel {
         gradientPanel1 = new com.mery.votingsystem.GradientPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        candidatejButton = new javax.swing.JButton();
+        UserjButton = new javax.swing.JButton();
+        logoutjButton = new javax.swing.JButton();
         gradientPanel2 = new com.mery.votingsystem.GradientPanel();
-        jButton6 = new javax.swing.JButton();
+        electionjButton = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(219, 226, 239));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -59,23 +59,38 @@ public class AdminHomePanel extends javax.swing.JPanel {
         jLabel1.setText("jLabel1");
         gradientPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, 200, 200));
 
-        jButton5.setBackground(new java.awt.Color(17, 45, 78));
-        jButton5.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
-        jButton5.setText("Create Candidate");
-        jButton5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        gradientPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 290, 220, 50));
+        candidatejButton.setBackground(new java.awt.Color(17, 45, 78));
+        candidatejButton.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
+        candidatejButton.setText("Create Candidate");
+        candidatejButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        candidatejButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                candidatejButtonActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(candidatejButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 290, 220, 50));
 
-        jButton4.setBackground(new java.awt.Color(17, 45, 78));
-        jButton4.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
-        jButton4.setText("Create User");
-        jButton4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        gradientPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 290, 170, 50));
+        UserjButton.setBackground(new java.awt.Color(17, 45, 78));
+        UserjButton.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
+        UserjButton.setText("Create User");
+        UserjButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        UserjButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UserjButtonActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(UserjButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 290, 170, 50));
 
-        jButton3.setBackground(new java.awt.Color(17, 45, 78));
-        jButton3.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        jButton3.setText("Log Out");
-        jButton3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        gradientPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 30, 100, 40));
+        logoutjButton.setBackground(new java.awt.Color(17, 45, 78));
+        logoutjButton.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        logoutjButton.setText("Log Out");
+        logoutjButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        logoutjButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutjButtonActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(logoutjButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 30, 100, 40));
 
         gradientPanel2.setGradientEndd(new java.awt.Color(17, 45, 78));
         gradientPanel2.setGradientStart(new java.awt.Color(17, 45, 78));
@@ -93,24 +108,46 @@ public class AdminHomePanel extends javax.swing.JPanel {
 
         gradientPanel1.add(gradientPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 765, 5));
 
-        jButton6.setBackground(new java.awt.Color(17, 45, 78));
-        jButton6.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
-        jButton6.setText("Create Election");
-        jButton6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        gradientPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 290, 220, 50));
+        electionjButton.setBackground(new java.awt.Color(17, 45, 78));
+        electionjButton.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
+        electionjButton.setText("Create Election");
+        electionjButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        electionjButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                electionjButtonActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(electionjButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 290, 220, 50));
 
         add(gradientPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 770, 450));
     }// </editor-fold>//GEN-END:initComponents
 
+    private void UserjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UserjButtonActionPerformed
+        MainFrame.setPage("createUserPanel");
+    }//GEN-LAST:event_UserjButtonActionPerformed
+
+    private void candidatejButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_candidatejButtonActionPerformed
+        MainFrame.setPage("createCandidatePanel");
+    }//GEN-LAST:event_candidatejButtonActionPerformed
+
+    private void logoutjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutjButtonActionPerformed
+        MainFrame.setPage("loginPanel");
+    }//GEN-LAST:event_logoutjButtonActionPerformed
+
+    private void electionjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_electionjButtonActionPerformed
+        
+        MainFrame.setPage("createElectionPanel");
+    }//GEN-LAST:event_electionjButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton UserjButton;
+    private javax.swing.JButton candidatejButton;
+    private javax.swing.JButton electionjButton;
     private com.mery.votingsystem.GradientPanel gradientPanel1;
     private com.mery.votingsystem.GradientPanel gradientPanel2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JButton logoutjButton;
     // End of variables declaration//GEN-END:variables
 }

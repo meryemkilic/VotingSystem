@@ -4,6 +4,10 @@
  */
 package com.mery.votingsystem;
 
+import java.awt.Image;
+import java.awt.event.WindowEvent;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author merye
@@ -15,6 +19,10 @@ public class UserHomePanel extends javax.swing.JPanel {
      */
     public UserHomePanel() {
         initComponents();
+        ImageIcon icon2 = new ImageIcon("C:\\Users\\merye\\Downloads\\REPUBLIC OF TÜRKİYE.png");
+        Image img2 = icon2.getImage().getScaledInstance(140, 140, Image.SCALE_SMOOTH);
+        icon2.setImage(img2);
+        jLabel1.setIcon(icon2);
     }
 
     /**
@@ -29,44 +37,88 @@ public class UserHomePanel extends javax.swing.JPanel {
         gradientPanel1 = new com.mery.votingsystem.GradientPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        gradientPanel2 = new com.mery.votingsystem.GradientPanel();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        presidentialjButton = new javax.swing.JButton();
+        showResultjButton = new javax.swing.JButton();
+        logoutjButton = new javax.swing.JButton();
+        mukhtarjButton = new javax.swing.JButton();
+        municipialjButton = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
+        gradientPanel2 = new com.mery.votingsystem.GradientPanel();
+
+        setPreferredSize(new java.awt.Dimension(765, 448));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         gradientPanel1.setGradientEndd(new java.awt.Color(214, 230, 242));
         gradientPanel1.setGradientStart(new java.awt.Color(118, 159, 205));
+        gradientPanel1.setMinimumSize(new java.awt.Dimension(765, 448));
         gradientPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 1, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(17, 45, 78));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Home Page");
-        gradientPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, 220, 60));
+        gradientPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 130, 220, 50));
+        gradientPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, 140, 140));
 
-        jLabel1.setText("jLabel1");
-        gradientPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 200, 200));
+        presidentialjButton.setBackground(new java.awt.Color(17, 45, 78));
+        presidentialjButton.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
+        presidentialjButton.setText("Presidential");
+        presidentialjButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        presidentialjButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                presidentialjButtonActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(presidentialjButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 350, 220, 50));
 
-        jButton5.setBackground(new java.awt.Color(17, 45, 78));
-        jButton5.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
-        jButton5.setText("Presidential");
-        jButton5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        gradientPanel1.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 380, 220, 50));
+        showResultjButton.setBackground(new java.awt.Color(17, 45, 78));
+        showResultjButton.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
+        showResultjButton.setText("Show Election Results");
+        showResultjButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        showResultjButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showResultjButtonActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(showResultjButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 230, 270, 50));
 
-        jButton4.setBackground(new java.awt.Color(17, 45, 78));
-        jButton4.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
-        jButton4.setText("Show Election Results");
-        jButton4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        gradientPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 310, 270, 50));
+        logoutjButton.setBackground(new java.awt.Color(17, 45, 78));
+        logoutjButton.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        logoutjButton.setText("Log Out");
+        logoutjButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        logoutjButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logoutjButtonActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(logoutjButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 30, 100, 40));
 
-        jButton3.setBackground(new java.awt.Color(17, 45, 78));
-        jButton3.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        jButton3.setText("Log Out");
-        jButton3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        gradientPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 30, 100, 40));
+        mukhtarjButton.setBackground(new java.awt.Color(17, 45, 78));
+        mukhtarjButton.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
+        mukhtarjButton.setText("Mukhtar");
+        mukhtarjButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        mukhtarjButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mukhtarjButtonActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(mukhtarjButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 230, 220, 50));
+
+        municipialjButton.setBackground(new java.awt.Color(17, 45, 78));
+        municipialjButton.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
+        municipialjButton.setText("Municipial");
+        municipialjButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        municipialjButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                municipialjButtonActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(municipialjButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 290, 220, 50));
+
+        jLabel7.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel7.setText("*Please select the election you want to vote for.");
+        gradientPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 210, 260, 14));
 
         gradientPanel2.setGradientEndd(new java.awt.Color(17, 45, 78));
         gradientPanel2.setGradientStart(new java.awt.Color(17, 45, 78));
@@ -82,58 +134,51 @@ public class UserHomePanel extends javax.swing.JPanel {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        gradientPanel1.add(gradientPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 765, 5));
+        gradientPanel1.add(gradientPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 765, 5));
 
-        jButton6.setBackground(new java.awt.Color(17, 45, 78));
-        jButton6.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
-        jButton6.setText("Mukhtar");
-        jButton6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        gradientPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 260, 220, 50));
-
-        jButton7.setBackground(new java.awt.Color(17, 45, 78));
-        jButton7.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
-        jButton7.setText("Municipial");
-        jButton7.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        gradientPanel1.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 320, 220, 50));
-
-        jLabel7.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel7.setText("*Please select the election you want to vote for.");
-        gradientPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 240, 260, 14));
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 770, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(gradientPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 770, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 450, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(gradientPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
+        add(gradientPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 448));
     }// </editor-fold>//GEN-END:initComponents
+
+    private void logoutjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutjButtonActionPerformed
+        MainFrame.setPage("loginPanel");
+    }//GEN-LAST:event_logoutjButtonActionPerformed
+
+    private void mukhtarjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mukhtarjButtonActionPerformed
+        MukhtarVotingFrame mukhtarVotingFrame = new MukhtarVotingFrame();
+        mukhtarVotingFrame.dispatchEvent(new WindowEvent(mukhtarVotingFrame,WindowEvent.WINDOW_ACTIVATED));
+        //mukhtarVotingFrame.dispatchEvent(new WindowEvent(mukhtarVotingFrame, WindowEvent.WINDOW_CLOSING));
+        mukhtarVotingFrame.show();
+        
+    }//GEN-LAST:event_mukhtarjButtonActionPerformed
+
+    private void showResultjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showResultjButtonActionPerformed
+        MainFrame.setPage("electionWinnersPanel");
+    }//GEN-LAST:event_showResultjButtonActionPerformed
+
+    private void municipialjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_municipialjButtonActionPerformed
+        MunicipalVotingFrame municipalVotingFrame = new MunicipalVotingFrame();
+        municipalVotingFrame.dispatchEvent(new WindowEvent(municipalVotingFrame,WindowEvent.WINDOW_ACTIVATED));
+        //mukhtarVotingFrame.dispatchEvent(new WindowEvent(mukhtarVotingFrame, WindowEvent.WINDOW_CLOSING));
+        municipalVotingFrame.show();
+    }//GEN-LAST:event_municipialjButtonActionPerformed
+
+    private void presidentialjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_presidentialjButtonActionPerformed
+        PresidentialVotingFrame presidentialVotingFrame= new PresidentialVotingFrame();
+        presidentialVotingFrame.dispatchEvent(new WindowEvent(presidentialVotingFrame,WindowEvent.WINDOW_ACTIVATED));
+        presidentialVotingFrame.show();
+    }//GEN-LAST:event_presidentialjButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.mery.votingsystem.GradientPanel gradientPanel1;
     private com.mery.votingsystem.GradientPanel gradientPanel2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JButton logoutjButton;
+    private javax.swing.JButton mukhtarjButton;
+    private javax.swing.JButton municipialjButton;
+    private javax.swing.JButton presidentialjButton;
+    private javax.swing.JButton showResultjButton;
     // End of variables declaration//GEN-END:variables
 }

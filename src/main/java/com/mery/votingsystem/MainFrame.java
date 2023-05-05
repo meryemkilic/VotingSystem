@@ -5,23 +5,73 @@
 package com.mery.votingsystem;
 
 import java.awt.CardLayout;
-import java.awt.LayoutManager;
+import java.awt.Component;
+import javax.swing.JPanel;
 
 public class MainFrame extends javax.swing.JFrame {
+    
+    static Person person;
+    LoginPanel loginPanel;
+    AdminHomePanel adminPanel;
+    UserHomePanel userPanel;
+    SignUpPanel signUpPanel;
+    CreateUserPanel createUserPanel;
+    CreateCandidatePanel createCandidatePanel;
+    CreateElectionPanel createElectionPanel;
+    ElectionWinnersPanel electionWinnersPanel;
+    static CardLayout cardLayout;
+    static JPanel panelCont;
 
-        LoginPanel loginPanel;
-        CardLayout cardLayout;
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
-        this.setResizable(false);
-        loginPanel= new LoginPanel();
-        cardLayout= (CardLayout)getContentPane().getLayout();
-        getContentPane().add(loginPanel,"loginPanel");
-        cardLayout.show(getContentPane(), "loginPanel");
+        MSK.testInit();
+        cardLayout = new CardLayout();
+        panelCont = new JPanel(cardLayout);
+        panelCont.setSize(765, 448);
+        this.setSize(765, 448);
+        getContentPane().add(panelCont);
+
+        //this.setResizable(false);
+        loginPanel = new LoginPanel();
+        loginPanel.setName("loginPanel");
+        adminPanel = new AdminHomePanel();
+        adminPanel.setName("adminPanel");
+        userPanel = new UserHomePanel();
+        userPanel.setName("userPanel");
+        signUpPanel = new SignUpPanel();
+        signUpPanel.setName("signUpPanel");
+        createUserPanel = new CreateUserPanel();
+        createUserPanel.setName("createUserPanel");
+        createCandidatePanel = new CreateCandidatePanel();
+        createCandidatePanel.setName("createCandidatePanel");
+        createElectionPanel = new CreateElectionPanel();
+        createElectionPanel.setName("createElectionPanel");
+        electionWinnersPanel = new ElectionWinnersPanel();
+        electionWinnersPanel.setName("electionWinnersPanel");
+        panelCont.add(loginPanel, "loginPanel");
+        panelCont.add(adminPanel, "adminPanel");
+        panelCont.add(userPanel, "userPanel");
+        panelCont.add(signUpPanel, "signUpPanel");
+        panelCont.add(createUserPanel, "createUserPanel");
+        panelCont.add(createCandidatePanel, "createCandidatePanel");
+        panelCont.add(createElectionPanel, "createElectionPanel");
+        panelCont.add(electionWinnersPanel, "electionWinnersPanel");
+        cardLayout.show(panelCont, "loginPanel");
         
+    }
+    
+    public static void setPage(String panelName) {
+        
+        cardLayout.show(panelCont, panelName);
+        for (Component component : panelCont.getComponents()) {
+            if (component.getName().equals(panelName) && component instanceof IPanel) {
+                IPanel iPanel = (IPanel) component;
+                iPanel.onPageSet();
+            }
+        }
     }
 
     /**
@@ -34,7 +84,6 @@ public class MainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 450));
         getContentPane().setLayout(new java.awt.CardLayout());
 
         pack();
@@ -43,8 +92,6 @@ public class MainFrame extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    
-    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

@@ -5,7 +5,10 @@
 package com.mery.votingsystem;
 
 import java.awt.Image;
+import java.awt.event.WindowEvent;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,12 +19,28 @@ public class PresidentialVotingFrame extends javax.swing.JFrame {
     /**
      * Creates new form PresidentialVotingFrame
      */
+    DefaultListModel<Object> candidateListModel = new DefaultListModel<>();
+
     public PresidentialVotingFrame() {
         initComponents();
+        candidatesjList.setModel(candidateListModel);
+        listCandidates();
         ImageIcon icon2 = new ImageIcon("C:\\Users\\merye\\Downloads\\REPUBLIC OF TÜRKİYE.png");
         Image img2 = icon2.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
         icon2.setImage(img2);
         jLabel1.setIcon(icon2);
+    }
+
+    public void listCandidates() {
+        candidateListModel.removeAllElements();
+        for (Election election : MSK.elections) {
+            if (election instanceof PresidentialElection) {
+                PresidentialElection presidentialElection = (PresidentialElection) election;
+                for (Candidate candidates : presidentialElection.candidates) {
+                    candidateListModel.addElement(candidates);
+                }
+            }
+        }
     }
 
     /**
@@ -38,11 +57,12 @@ public class PresidentialVotingFrame extends javax.swing.JFrame {
         gradientPanel2 = new com.mery.votingsystem.GradientPanel();
         jButton3 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
+        candidatesjList = new javax.swing.JList<>();
         jLabel11 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
+        votejButton = new javax.swing.JButton();
+        backjButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -64,10 +84,15 @@ public class PresidentialVotingFrame extends javax.swing.JFrame {
         jButton3.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jButton3.setText("CV");
         jButton3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         gradientPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 310, 100, 40));
 
-        jList2.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jScrollPane2.setViewportView(jList2);
+        candidatesjList.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jScrollPane2.setViewportView(candidatesjList);
 
         gradientPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 60, 310, 250));
 
@@ -83,20 +108,84 @@ public class PresidentialVotingFrame extends javax.swing.JFrame {
         gradientPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 10, 310, -1));
 
         jLabel1.setText("jLabel1");
-        gradientPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 200, 200));
+        gradientPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 200, 200));
 
-        jButton5.setBackground(new java.awt.Color(17, 45, 78));
-        jButton5.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        jButton5.setText("Vote");
-        jButton5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        gradientPanel2.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 310, 100, 40));
+        votejButton.setBackground(new java.awt.Color(17, 45, 78));
+        votejButton.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        votejButton.setText("Vote");
+        votejButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        votejButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                votejButtonActionPerformed(evt);
+            }
+        });
+        gradientPanel2.add(votejButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 310, 100, 40));
 
         gradientPanel1.add(gradientPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 770, 370));
+
+        backjButton.setBackground(new java.awt.Color(17, 45, 78));
+        backjButton.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        backjButton.setText("Back");
+        backjButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        backjButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backjButtonActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(backjButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 50, 80, 30));
 
         getContentPane().add(gradientPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-1, -8, 770, 460));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void backjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backjButtonActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_backjButtonActionPerformed
+
+    private void votejButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_votejButtonActionPerformed
+//    oy verirken candidates seçmediyse (null) hata ver!
+        if (candidatesjList.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "Please select the candidate you will vote for!", "Missing Information", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+//    birden fazla oy vermeyi kapat!
+        for (Election election : MSK.elections) {
+            if (election instanceof PresidentialElection) {
+                for (Vote vote : ((PresidentialElection) election).votes) {
+                    if (vote.user.equals(MainFrame.person)) {
+                     JOptionPane.showMessageDialog(this, "You cannot vote a second time!", "Attention", JOptionPane.ERROR_MESSAGE);   
+                    return;
+                    }
+                }
+            }
+        }
+//    yaş sınırını kontrol et (18den küçükse velet kaybol de)!
+    if(((User) MainFrame.person).age<18){
+        JOptionPane.showMessageDialog(this, "You cannot vote!", "Attention", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+
+
+        Vote vote = new Vote();
+        vote.candidate = (Candidate) candidatesjList.getSelectedValue();
+        vote.user = (User) MainFrame.person;
+        for (Election election : MSK.elections) {
+            if (election instanceof PresidentialElection) {
+                ((PresidentialElection) election).votes.add(vote);
+            }
+        }
+        JOptionPane.showMessageDialog(this, "Your voting process was successful. You can not vote again!", "Successful", JOptionPane.ERROR_MESSAGE);
+
+    }//GEN-LAST:event_votejButtonActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        CVFrame cvFrame = new CVFrame(((Candidate)candidatesjList.getSelectedValue()), "Presidential Election");
+        cvFrame.dispatchEvent(new WindowEvent(cvFrame,WindowEvent.WINDOW_ACTIVATED));
+        cvFrame.show();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -134,15 +223,16 @@ public class PresidentialVotingFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton backjButton;
+    private javax.swing.JList<Object> candidatesjList;
     private com.mery.votingsystem.GradientPanel gradientPanel1;
     private com.mery.votingsystem.GradientPanel gradientPanel2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JList<String> jList2;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton votejButton;
     // End of variables declaration//GEN-END:variables
 }

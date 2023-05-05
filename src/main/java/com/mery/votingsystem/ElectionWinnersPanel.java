@@ -5,23 +5,213 @@
 package com.mery.votingsystem;
 
 import java.awt.Image;
+import java.util.ArrayList;
+import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author merye
  */
-public class ElectionWinnersPanel extends javax.swing.JPanel {
+public class ElectionWinnersPanel extends javax.swing.JPanel implements IPanel {
 
     /**
      * Creates new form ElectionWinnersPanel
      */
+    DefaultTableModel tableModel = new DefaultTableModel();
+    String[] tableColumnNames = {"Type", "City", "Neighbourhood", "Candidate", "Status", "Vote Count"};
+
     public ElectionWinnersPanel() {
         initComponents();
+        refreshCity();
+        refreshNeigh();
+        refreshTable();
+        tableModel.setColumnIdentifiers(tableColumnNames);
+        jTable.setModel(tableModel);
         ImageIcon icon2 = new ImageIcon("C:\\Users\\merye\\Downloads\\REPUBLIC OF TÜRKİYE.png");
         Image img2 = icon2.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         icon2.setImage(img2);
         jLabel1.setIcon(icon2);
+    }
+
+    public void refreshCity() {
+        jComboBoxCity.removeAllItems();
+        jComboBoxCity.addItem("All");
+        for (City city : MSK.cities) {
+            jComboBoxCity.addItem(city);
+        }
+        jComboBoxCity.setSelectedIndex(0);
+    }
+
+    public void refreshNeigh() {
+        jComboBoxNeigh.removeAllItems();
+        if (jComboBoxCity.getSelectedItem().equals("All")) {
+            jComboBoxNeigh.addItem("All");
+            return;
+        }
+        City selectedCity = (City) jComboBoxCity.getSelectedItem();
+        jComboBoxNeigh.addItem("All");
+        for (String neigh : selectedCity.neighbourhoods) {
+            jComboBoxNeigh.addItem(neigh);
+        }
+        jComboBoxNeigh.setSelectedIndex(0);
+    }
+
+    public void refreshTable() {
+        tableModel.setRowCount(0);
+        for (Election election : MSK.elections) {
+            for (Candidate candidate : election.candidates) {
+                Vector vector = new Vector();
+
+                if (election instanceof MukhtarElection) {
+                    vector.add("Mukhtar");
+                } else if (election instanceof MunicipalElection) {
+                    vector.add("Municipal");
+                } else if (election instanceof PresidentialElection) {
+                    vector.add("Presidential");
+                }
+                vector.add(candidate.city);
+                vector.add(candidate.neighbourhood);
+                vector.add(candidate.getFirstName() + " " + candidate.getSurname());
+
+                if (candidate.status()) {
+                    vector.add("Winner");
+                } else {
+                    vector.add("Loser");
+                }
+                vector.add(election.voteCalculator(candidate));
+                tableModel.addRow(vector);
+            }
+        }
+    }
+
+    public void enRefreshTable() {
+        tableModel.setRowCount(0);
+        for (Candidate candidate : whichCandidate()) {
+            Election election = null;
+            for (Election elections : MSK.elections) {
+                if (elections.candidates.contains(candidate)) {
+                    election = elections;
+                }
+            }
+            Vector vector = new Vector();
+            if (election instanceof MukhtarElection) {
+                vector.add("Mukhtar");
+            } else if (election instanceof MunicipalElection) {
+                vector.add("Municipal");
+            } else if (election instanceof PresidentialElection) {
+                vector.add("Presidential");
+            }
+            vector.add(candidate.city);
+            vector.add(candidate.neighbourhood);
+            vector.add(candidate.getFirstName() + " " + candidate.getSurname());
+
+            if (candidate.status()) {
+                vector.add("Winner");
+            } else {
+                vector.add("Loser");
+            }
+            vector.add(election.voteCalculator(candidate));
+            tableModel.addRow(vector);
+        }
+    }
+
+    public ArrayList<Candidate> winnerOrLoser() {
+        ArrayList<Candidate> result = new ArrayList<>();
+        if (((winnerjRadioButton.isSelected() && losersjRadioButton.isSelected())) || (!winnerjRadioButton.isSelected() && !losersjRadioButton.isSelected())) {
+            for (Election election : MSK.elections) {
+                result.addAll(election.candidates);
+            }
+        } else if (winnerjRadioButton.isSelected() && !losersjRadioButton.isSelected()) {
+            for (Election election : MSK.elections) {
+                for (Candidate candidate : election.candidates) {
+                    if (candidate.status()) {
+                        result.add(candidate);
+                    }
+                }
+            }
+        } else if (!winnerjRadioButton.isSelected() && losersjRadioButton.isSelected()) {
+            for (Election election : MSK.elections) {
+                for (Candidate candidate : election.candidates) {
+                    if (!candidate.status()) {
+                        result.add(candidate);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<Candidate> whichCity() {
+        ArrayList<Candidate> oldResult = winnerOrLoser();
+        ArrayList<Candidate> result = new ArrayList<>();
+
+        if (jComboBoxCity.getSelectedItem().equals("All")) {
+            return oldResult;
+        }
+        for (Candidate candidate : oldResult) {
+            if (!(candidate == null) && candidate.city.equals(jComboBoxCity.getSelectedItem())) {
+                result.add(candidate);
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<Candidate> whichNeigh() {
+        ArrayList<Candidate> oldResult = whichCity();
+        ArrayList<Candidate> result = new ArrayList<>();
+
+        if (jComboBoxNeigh.getSelectedItem().equals("All")) {
+            return oldResult;
+        }
+        for (Candidate candidate : oldResult) {
+            if (candidate.neighbourhood.equals(jComboBoxNeigh.getSelectedItem())) {
+                result.add(candidate);
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<Candidate> whichElection() {
+        ArrayList<Candidate> oldResult = whichNeigh();
+        ArrayList<Candidate> result = new ArrayList<>();
+
+        if (electionTypeJComboBox.getSelectedItem().equals("All")) {
+            return oldResult;
+        }
+        for (Candidate candidate : oldResult) {
+            for (Election election : MSK.elections) {
+                if ((election instanceof MukhtarElection) && (electionTypeJComboBox.getSelectedItem().equals("Mukhtar Election")) && election.candidates.contains(candidate)) {
+                    result.add(candidate);
+                } else if ((election instanceof MunicipalElection) && (electionTypeJComboBox.getSelectedItem().equals("Municipal Election")) && election.candidates.contains(candidate)) {
+                    result.add(candidate);
+                } else if ((election instanceof PresidentialElection) && electionTypeJComboBox.getSelectedItem().equals("Presidential Election") && election.candidates.contains(candidate)) {
+                    result.add(candidate);
+                }
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<Candidate> whichCandidate() {
+        ArrayList<Candidate> oldResult = whichElection();
+        ArrayList<Candidate> result = new ArrayList<>();
+
+        if (candidatejTextField.getText().equals("")) {
+            return oldResult;
+        } else {
+            Pattern pattern = Pattern.compile(candidatejTextField.getText());
+            for (Candidate candidate : oldResult) {
+                Matcher matcher = pattern.matcher(candidate.toString());
+                if (matcher.find()) {
+                    result.add(candidate);
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -36,20 +226,21 @@ public class ElectionWinnersPanel extends javax.swing.JPanel {
         gradientPanel1 = new com.mery.votingsystem.GradientPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
+        searchjButton = new javax.swing.JButton();
         gradientPanel2 = new com.mery.votingsystem.GradientPanel();
-        jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        cityJComboBox = new javax.swing.JComboBox<>();
-        cityJComboBox1 = new javax.swing.JComboBox<>();
-        cityJComboBox2 = new javax.swing.JComboBox<>();
-        jTextField5 = new javax.swing.JTextField();
+        jTable = new javax.swing.JTable();
+        electionTypeJComboBox = new javax.swing.JComboBox<>();
+        jComboBoxCity = new javax.swing.JComboBox<>();
+        candidatejTextField = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        backjButton = new javax.swing.JButton();
+        jComboBoxNeigh = new javax.swing.JComboBox<>();
+        losersjRadioButton = new javax.swing.JRadioButton();
+        winnerjRadioButton = new javax.swing.JRadioButton();
 
         gradientPanel1.setGradientEndd(new java.awt.Color(214, 230, 242));
         gradientPanel1.setGradientStart(new java.awt.Color(118, 159, 205));
@@ -64,11 +255,16 @@ public class ElectionWinnersPanel extends javax.swing.JPanel {
         jLabel1.setText("jLabel1");
         gradientPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 100, 100));
 
-        jButton3.setBackground(new java.awt.Color(17, 45, 78));
-        jButton3.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        jButton3.setText("Search");
-        jButton3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        gradientPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 90, 120, 30));
+        searchjButton.setBackground(new java.awt.Color(17, 45, 78));
+        searchjButton.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        searchjButton.setText("Search");
+        searchjButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        searchjButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchjButtonActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(searchjButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 80, 80, 30));
 
         gradientPanel2.setGradientEndd(new java.awt.Color(17, 45, 78));
         gradientPanel2.setGradientStart(new java.awt.Color(17, 45, 78));
@@ -86,35 +282,34 @@ public class ElectionWinnersPanel extends javax.swing.JPanel {
 
         gradientPanel1.add(gradientPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 60, 640, 5));
 
-        jLabel7.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel7.setText("*Please select the election you want to vote for.");
-        gradientPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 70, 260, 14));
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTable.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTable);
 
         gradientPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 730, 240));
 
-        cityJComboBox.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        gradientPanel1.add(cityJComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 150, 200, -1));
+        electionTypeJComboBox.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        electionTypeJComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Mukhtar Election", "Municipal Election", "Presidential Election" }));
+        gradientPanel1.add(electionTypeJComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 150, 200, -1));
 
-        cityJComboBox1.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        gradientPanel1.add(cityJComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, 200, -1));
-
-        cityJComboBox2.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        gradientPanel1.add(cityJComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, 200, -1));
-        gradientPanel1.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 96, 190, 30));
+        jComboBoxCity.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jComboBoxCity.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxCityActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(jComboBoxCity, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, 200, -1));
+        gradientPanel1.add(candidatejTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 80, 190, 30));
 
         jLabel13.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(17, 45, 78));
@@ -124,7 +319,7 @@ public class ElectionWinnersPanel extends javax.swing.JPanel {
         jLabel14.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(17, 45, 78));
         jLabel14.setText("Candidate:");
-        gradientPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 100, 100, -1));
+        gradientPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 80, 100, -1));
 
         jLabel15.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(17, 45, 78));
@@ -136,19 +331,40 @@ public class ElectionWinnersPanel extends javax.swing.JPanel {
         jLabel16.setText("Neighbourhood:");
         gradientPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 130, 130, -1));
 
-        jButton4.setBackground(new java.awt.Color(17, 45, 78));
-        jButton4.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jButton4.setText("Back");
-        jButton4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        gradientPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 20, 80, 30));
+        backjButton.setBackground(new java.awt.Color(17, 45, 78));
+        backjButton.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        backjButton.setText("Back");
+        backjButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        backjButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backjButtonActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(backjButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 20, 80, 30));
+
+        jComboBoxNeigh.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jComboBoxNeigh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxNeighActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(jComboBoxNeigh, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, 200, -1));
+
+        losersjRadioButton.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
+        losersjRadioButton.setForeground(new java.awt.Color(17, 45, 78));
+        losersjRadioButton.setText("Losers");
+        gradientPanel1.add(losersjRadioButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 80, -1, -1));
+
+        winnerjRadioButton.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
+        winnerjRadioButton.setForeground(new java.awt.Color(17, 45, 78));
+        winnerjRadioButton.setText("Winners");
+        gradientPanel1.add(winnerjRadioButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 80, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(gradientPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 770, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(gradientPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 770, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,24 +374,51 @@ public class ElectionWinnersPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void searchjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchjButtonActionPerformed
+        enRefreshTable();
+
+    }//GEN-LAST:event_searchjButtonActionPerformed
+
+
+    private void jComboBoxNeighActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxNeighActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxNeighActionPerformed
+
+    private void jComboBoxCityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCityActionPerformed
+        refreshNeigh();
+    }//GEN-LAST:event_jComboBoxCityActionPerformed
+
+    private void backjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backjButtonActionPerformed
+        MainFrame.setPage("userPanel");
+    }//GEN-LAST:event_backjButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> cityJComboBox;
-    private javax.swing.JComboBox<String> cityJComboBox1;
-    private javax.swing.JComboBox<String> cityJComboBox2;
+    private javax.swing.JButton backjButton;
+    private javax.swing.JTextField candidatejTextField;
+    private javax.swing.JComboBox<String> electionTypeJComboBox;
     private com.mery.votingsystem.GradientPanel gradientPanel1;
     private com.mery.votingsystem.GradientPanel gradientPanel2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JComboBox<Object> jComboBoxCity;
+    private javax.swing.JComboBox<String> jComboBoxNeigh;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTable jTable;
+    private javax.swing.JRadioButton losersjRadioButton;
+    private javax.swing.JButton searchjButton;
+    private javax.swing.JRadioButton winnerjRadioButton;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void onPageSet() {
+        for (Election election : MSK.elections) {
+            election.findWinner();
+        }
+        refreshTable();
+    }
 }

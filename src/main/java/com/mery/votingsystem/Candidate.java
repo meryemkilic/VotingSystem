@@ -8,12 +8,24 @@ public class Candidate extends Person{
     
     CV cv;
     int age;
-    String city;
+    City city;
+    String neighbourhood;
     
     
-    
-    public static void main(String[] args) {
-       
+
+    public Candidate(int age, City city, String neighbourhood, String userName, String FirstName, String Surname, String password) {
+        super(userName, FirstName, Surname, password);
+        this.age = age;
+        this.city = city;
+        this.neighbourhood = neighbourhood;
     }
- 
+    
+    public boolean status(){
+        for (Election election : MSK.elections) {
+            if(election.candidates.contains(this)&&election.electionWinner.contains(this)){
+                return true;
+            }            
+        }
+    return false;
+    }
 }

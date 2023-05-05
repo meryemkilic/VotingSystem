@@ -8,6 +8,15 @@ public class Person {
     private String Surname;
     private String password;
 
+    public Person(String userName, String FirstName, String Surname, String password) {
+        this.userName = userName;
+        this.FirstName = FirstName;
+        this.Surname = Surname;
+        this.password = password;
+    }
+
+    
+    
     String getUserName() {
         return userName;
     }
@@ -39,5 +48,12 @@ public class Person {
     void setPassword(String password) {
         this.password = password;
     }
+
+    @Override
+    public String toString() {
+        return FirstName+" "+Surname;
+    }
+    
+    
 
 }

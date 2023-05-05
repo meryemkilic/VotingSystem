@@ -4,6 +4,13 @@
  */
 package com.mery.votingsystem;
 
+import java.awt.Image;
+import java.io.File;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author merye
@@ -15,6 +22,25 @@ public class CreateCandidatePanel extends javax.swing.JPanel {
      */
     public CreateCandidatePanel() {
         initComponents();
+        refreshCity();
+        refreshNeigh();
+    }
+
+    public void refreshCity() {
+        jComboBoxCity.removeAllItems();
+        for (City city : MSK.cities) {
+            jComboBoxCity.addItem(city);
+        }
+        jComboBoxCity.setSelectedIndex(0);
+    }
+
+    public void refreshNeigh() {
+        jComboBoxNeigh.removeAllItems();
+        City selectedCity = (City) jComboBoxCity.getSelectedItem();
+        for (String neigh : selectedCity.neighbourhoods) {
+            jComboBoxNeigh.addItem(neigh);
+        }
+        jComboBoxNeigh.setSelectedIndex(0);
     }
 
     /**
@@ -30,17 +56,20 @@ public class CreateCandidatePanel extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        neighbourhoodJComboBox = new javax.swing.JComboBox<>();
+        jComboBoxNeigh = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        cityJComboBox = new javax.swing.JComboBox<>();
+        jComboBoxCity = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        ageJTextField = new javax.swing.JTextField();
-        nameJTextField = new javax.swing.JTextField();
-        surnameJTextField = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        jTextFieldAge = new javax.swing.JTextField();
+        jTextFieldName = new javax.swing.JTextField();
+        jTextFieldSurname = new javax.swing.JTextField();
+        savejButton = new javax.swing.JButton();
+        backjButton = new javax.swing.JButton();
+        jButtonAddPicture = new javax.swing.JButton();
+        jLabelIcon = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
 
@@ -69,8 +98,8 @@ public class CreateCandidatePanel extends javax.swing.JPanel {
         jLabel5.setText("Surname:");
         gradientPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, 130, -1));
 
-        neighbourhoodJComboBox.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        gradientPanel1.add(neighbourhoodJComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 260, 180, -1));
+        jComboBoxNeigh.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        gradientPanel1.add(jComboBoxNeigh, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 260, 180, -1));
 
         jLabel6.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(17, 45, 78));
@@ -87,8 +116,13 @@ public class CreateCandidatePanel extends javax.swing.JPanel {
         jLabel8.setText("City:");
         gradientPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 190, 130, -1));
 
-        cityJComboBox.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        gradientPanel1.add(cityJComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 190, 180, -1));
+        jComboBoxCity.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jComboBoxCity.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxCityActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(jComboBoxCity, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 190, 180, -1));
 
         jLabel9.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(17, 45, 78));
@@ -100,25 +134,53 @@ public class CreateCandidatePanel extends javax.swing.JPanel {
         jLabel10.setText("*Please select the city in which the individual is nominated.");
         gradientPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, 320, 20));
 
-        ageJTextField.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        gradientPanel1.add(ageJTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 150, 180, -1));
-
-        nameJTextField.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        gradientPanel1.add(nameJTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 70, 180, -1));
-
-        surnameJTextField.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        gradientPanel1.add(surnameJTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 110, 180, -1));
-
-        jButton3.setBackground(new java.awt.Color(17, 45, 78));
-        jButton3.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jButton3.setText("Save");
-        jButton3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldAge.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jTextFieldAge.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jTextFieldAgeActionPerformed(evt);
             }
         });
-        gradientPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 310, 80, 30));
+        gradientPanel1.add(jTextFieldAge, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 150, 180, -1));
+
+        jTextFieldName.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        gradientPanel1.add(jTextFieldName, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 70, 180, -1));
+
+        jTextFieldSurname.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        gradientPanel1.add(jTextFieldSurname, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 110, 180, -1));
+
+        savejButton.setBackground(new java.awt.Color(17, 45, 78));
+        savejButton.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        savejButton.setText("Save");
+        savejButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        savejButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                savejButtonActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(savejButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 280, 80, 30));
+
+        backjButton.setBackground(new java.awt.Color(17, 45, 78));
+        backjButton.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        backjButton.setText("Back");
+        backjButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        backjButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backjButtonActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(backjButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 330, 80, 30));
+
+        jButtonAddPicture.setBackground(new java.awt.Color(17, 45, 78));
+        jButtonAddPicture.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jButtonAddPicture.setText("Add Picture");
+        jButtonAddPicture.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButtonAddPicture.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAddPictureActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(jButtonAddPicture, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 280, 100, 30));
+        gradientPanel1.add(jLabelIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 100, 170, 140));
 
         add(gradientPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 770, 400));
 
@@ -133,16 +195,69 @@ public class CreateCandidatePanel extends javax.swing.JPanel {
         add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 30, 220, -1));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void savejButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savejButtonActionPerformed
+        if (jTextFieldName.getText().isEmpty() || jTextFieldSurname.getText().isEmpty() || jTextFieldAge.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Fill the empty areas!", "Warning", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int age;
+        try {
+
+            age = Integer.parseInt(jTextFieldAge.getText());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Wrong Information!", "Warning", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String firstname = jTextFieldName.getText();
+        String surname = jTextFieldSurname.getText();
+        City city = (City) jComboBoxCity.getSelectedItem();
+        String neigh = jComboBoxNeigh.getSelectedItem().toString();
+        Candidate candidate = new Candidate(age, city, neigh, surname, firstname, surname, neigh);
+        MSK.people.add(candidate);
+
+        JOptionPane.showMessageDialog(this, "The record has been created!", "Successful", JOptionPane.INFORMATION_MESSAGE);        // TODO add your handling code here:
+    }//GEN-LAST:event_savejButtonActionPerformed
+
+    private void backjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backjButtonActionPerformed
+        MainFrame.setPage("adminPanel");
+    }//GEN-LAST:event_backjButtonActionPerformed
+
+    private void jComboBoxCityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCityActionPerformed
+        refreshNeigh();
+    }//GEN-LAST:event_jComboBoxCityActionPerformed
+
+    private void jButtonAddPictureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddPictureActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter= new FileNameExtensionFilter("4 Extension Suported", "jpg","png","jpeg","svg");
+        fileChooser.setFileFilter(filter);
+        int selected= fileChooser.showOpenDialog(this);
+        
+        if(selected==JFileChooser.APPROVE_OPTION){
+            File fle= fileChooser.getSelectedFile();
+            String getSelectedImage=fle.getAbsolutePath();
+            JOptionPane.showMessageDialog(null, getSelectedImage);
+            ImageIcon imageIcon = new ImageIcon(getSelectedImage);
+            jLabelIcon.setIcon(imageIcon);
+            
+            Image imFit = imageIcon.getImage();
+            Image imgFit= imFit.getScaledInstance(jLabelIcon.getWidth(), jLabelIcon.getHeight(), Image.SCALE_SMOOTH);
+        }
+        
+    }//GEN-LAST:event_jButtonAddPictureActionPerformed
+
+    private void jTextFieldAgeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldAgeActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_jTextFieldAgeActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField ageJTextField;
-    private javax.swing.JComboBox<String> cityJComboBox;
+    private javax.swing.JButton backjButton;
     private com.mery.votingsystem.GradientPanel gradientPanel1;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButtonAddPicture;
+    private javax.swing.JComboBox<Object> jComboBoxCity;
+    private javax.swing.JComboBox<Object> jComboBoxNeigh;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -153,8 +268,10 @@ public class CreateCandidatePanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JTextField nameJTextField;
-    private javax.swing.JComboBox<String> neighbourhoodJComboBox;
-    private javax.swing.JTextField surnameJTextField;
+    private javax.swing.JLabel jLabelIcon;
+    private javax.swing.JTextField jTextFieldAge;
+    private javax.swing.JTextField jTextFieldName;
+    private javax.swing.JTextField jTextFieldSurname;
+    private javax.swing.JButton savejButton;
     // End of variables declaration//GEN-END:variables
 }

@@ -4,17 +4,41 @@
  */
 package com.mery.votingsystem;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author merye
- */
-public class CreateElectionPanel extends javax.swing.JPanel {
+ */ 
+
+public class CreateElectionPanel extends javax.swing.JPanel implements IPanel{
 
     /**
      * Creates new form CreateElectionPanel
      */
+    DefaultListModel<Object> municipialElection = new DefaultListModel<>();
+    DefaultListModel<Object> mukhtarElection = new DefaultListModel<>();
+    DefaultListModel<Object> presidentialElection = new DefaultListModel<>();
+
     public CreateElectionPanel() {
         initComponents();
+        refreshCandidate();
+        municipialjList.setModel(municipialElection);
+        mukhtarjList.setModel(mukhtarElection);
+        presidentialjList.setModel(presidentialElection);
+
+    }
+    
+
+    public void refreshCandidate() {
+        candidateJComboBox.removeAllItems();
+        for (Person person : MSK.people) {
+            if (person instanceof Candidate) {
+                Candidate candidate = (Candidate) person;
+                candidateJComboBox.addItem(candidate);
+            }
+        }
     }
 
     /**
@@ -26,28 +50,28 @@ public class CreateElectionPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jRadioButtonMenuItem1 = new javax.swing.JRadioButtonMenuItem();
         gradientPanel1 = new com.mery.votingsystem.GradientPanel();
+        backjButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        candidateJComboBox = new javax.swing.JComboBox<>();
+        electionJComboBox = new javax.swing.JComboBox<>();
         jLabel11 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList2 = new javax.swing.JList<>();
+        municipialjList = new javax.swing.JList<>();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jList3 = new javax.swing.JList<>();
+        mukhtarjList = new javax.swing.JList<>();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jList4 = new javax.swing.JList<>();
+        presidentialjList = new javax.swing.JList<>();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        addjButton = new javax.swing.JButton();
+        savejButton1 = new javax.swing.JButton();
+        candidateJComboBox = new javax.swing.JComboBox<>();
+        jLabel16 = new javax.swing.JLabel();
+        removejButton = new javax.swing.JButton();
+        updatejButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-
-        jRadioButtonMenuItem1.setSelected(true);
-        jRadioButtonMenuItem1.setText("jRadioButtonMenuItem1");
 
         setBackground(new java.awt.Color(249, 247, 247));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -59,13 +83,30 @@ public class CreateElectionPanel extends javax.swing.JPanel {
         gradientPanel1.setGradientStart(new java.awt.Color(118, 159, 205));
         gradientPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        backjButton.setBackground(new java.awt.Color(17, 45, 78));
+        backjButton.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        backjButton.setText("Back");
+        backjButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        backjButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backjButtonActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(backjButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 360, 80, 30));
+
         jLabel2.setFont(new java.awt.Font("SansSerif", 2, 12)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(17, 45, 78));
         jLabel2.setText("*Identify the election for which he is nominated.");
         gradientPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 90, 400, 20));
 
-        candidateJComboBox.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        gradientPanel1.add(candidateJComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 50, 300, -1));
+        electionJComboBox.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        electionJComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Municipial", "Mukhtar", "Presidential" }));
+        electionJComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                electionJComboBoxActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(electionJComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 30, 190, -1));
 
         jLabel11.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(17, 45, 78));
@@ -73,25 +114,25 @@ public class CreateElectionPanel extends javax.swing.JPanel {
         jLabel11.setText("Presidential");
         gradientPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 130, 230, -1));
 
-        jList2.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jScrollPane2.setViewportView(jList2);
+        municipialjList.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jScrollPane2.setViewportView(municipialjList);
 
         gradientPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 230, 200));
 
-        jList3.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jScrollPane3.setViewportView(jList3);
+        mukhtarjList.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jScrollPane3.setViewportView(mukhtarjList);
 
         gradientPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 160, 230, 200));
 
-        jList4.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jScrollPane4.setViewportView(jList4);
+        presidentialjList.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jScrollPane4.setViewportView(presidentialjList);
 
         gradientPanel1.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 160, 230, 200));
 
         jLabel13.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(17, 45, 78));
-        jLabel13.setText("Candidate:");
-        gradientPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 130, -1));
+        jLabel13.setText("Election:");
+        gradientPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 30, 80, -1));
 
         jLabel14.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(17, 45, 78));
@@ -105,30 +146,69 @@ public class CreateElectionPanel extends javax.swing.JPanel {
         jLabel15.setText("Mukhtar");
         gradientPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 130, 230, -1));
 
-        jButton1.setBackground(new java.awt.Color(17, 45, 78));
-        jButton1.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        jButton1.setText("<");
-        jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        gradientPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 50, 50, 30));
+        addjButton.setBackground(new java.awt.Color(17, 45, 78));
+        addjButton.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        addjButton.setText("Add");
+        addjButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        addjButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addjButtonActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(addjButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 80, 90, 30));
 
-        jButton3.setBackground(new java.awt.Color(17, 45, 78));
-        jButton3.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jButton3.setText("Save");
-        jButton3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        gradientPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 360, 80, 30));
+        savejButton1.setBackground(new java.awt.Color(17, 45, 78));
+        savejButton1.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        savejButton1.setText("Save");
+        savejButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        savejButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                savejButton1ActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(savejButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 360, 80, 30));
 
-        jButton4.setBackground(new java.awt.Color(17, 45, 78));
-        jButton4.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
-        jButton4.setText(">");
-        jButton4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        gradientPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 50, 50, 30));
+        candidateJComboBox.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        candidateJComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                candidateJComboBoxActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(candidateJComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 30, 300, -1));
+
+        jLabel16.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(17, 45, 78));
+        jLabel16.setText("Candidate:");
+        gradientPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 100, -1));
+
+        removejButton.setBackground(new java.awt.Color(17, 45, 78));
+        removejButton.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        removejButton.setText("Remove");
+        removejButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        removejButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removejButtonActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(removejButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 80, 90, 30));
+
+        updatejButton.setBackground(new java.awt.Color(17, 45, 78));
+        updatejButton.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        updatejButton.setText("Update");
+        updatejButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        updatejButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updatejButtonActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(updatejButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 80, 90, 30));
 
         add(gradientPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 770, 400));
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 1, 30)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(17, 45, 78));
         jLabel3.setText("Create Election");
-        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, -1, -1));
+        add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
 
         jLabel7.setFont(new java.awt.Font("SansSerif", 2, 12)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(17, 45, 78));
@@ -136,26 +216,124 @@ public class CreateElectionPanel extends javax.swing.JPanel {
         add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 30, 220, -1));
     }// </editor-fold>//GEN-END:initComponents
 
+    private void backjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backjButtonActionPerformed
+        MainFrame.setPage("adminPanel");
+    }//GEN-LAST:event_backjButtonActionPerformed
+
+    private void addjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addjButtonActionPerformed
+        if (municipialElection.contains(candidateJComboBox.getSelectedItem()) || mukhtarElection.contains(candidateJComboBox.getSelectedItem()) || presidentialElection.contains(candidateJComboBox.getSelectedItem())) {
+            return;//hata mesajı ekle
+        }
+        if (electionJComboBox.getSelectedItem().toString().equals("Municipial")) {
+            municipialElection.addElement(candidateJComboBox.getSelectedItem());
+        } else if (electionJComboBox.getSelectedItem().toString().equals("Mukhtar")) {
+            mukhtarElection.addElement(candidateJComboBox.getSelectedItem());
+        } else {
+            presidentialElection.addElement(candidateJComboBox.getSelectedItem());
+        }
+    }//GEN-LAST:event_addjButtonActionPerformed
+
+    private void electionJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_electionJComboBoxActionPerformed
+
+    }//GEN-LAST:event_electionJComboBoxActionPerformed
+
+    private void savejButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savejButton1ActionPerformed
+      
+        MSK.elections.removeAll(MSK.elections);
+        MukhtarElection mukhtarElection = new MukhtarElection();
+        MunicipalElection municipalElection = new MunicipalElection();
+        PresidentialElection presidentialElection = new PresidentialElection();
+
+        for (int i = 0; i < this.mukhtarElection.size(); i++) {
+            Candidate candidate = (Candidate) this.mukhtarElection.get(i);
+            mukhtarElection.candidates.add(candidate);
+        }
+        for (int i = 0; i < this.municipialElection.size(); i++) {
+            Candidate candidate = (Candidate) this.municipialElection.get(i);
+            municipalElection.candidates.add(candidate);
+        }
+        for (int i = 0; i < this.presidentialElection.size(); i++) {
+            Candidate candidate = (Candidate) this.presidentialElection.get(i);
+            presidentialElection.candidates.add(candidate);
+        }
+        
+        MSK.elections.add(mukhtarElection);
+        MSK.elections.add(municipalElection);
+        MSK.elections.add(presidentialElection);
+
+        JOptionPane.showMessageDialog(this, "The record has been created!", "Successful", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_savejButton1ActionPerformed
+
+    private void candidateJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_candidateJComboBoxActionPerformed
+        
+    }//GEN-LAST:event_candidateJComboBoxActionPerformed
+
+    private void removejButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removejButtonActionPerformed
+
+        if (municipialjList.getSelectedIndex() != -1) {
+            municipialElection.removeElementAt(municipialjList.getSelectedIndex());
+        }
+        if (mukhtarjList.getSelectedIndex() != -1) {
+            mukhtarElection.removeElementAt(mukhtarjList.getSelectedIndex());
+        }
+        if (presidentialjList.getSelectedIndex() != -1) {
+            presidentialElection.removeElementAt(presidentialjList.getSelectedIndex());
+        }
+
+    }//GEN-LAST:event_removejButtonActionPerformed
+
+    private void updatejButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatejButtonActionPerformed
+        if (!municipialElection.contains(candidateJComboBox.getSelectedItem()) && !mukhtarElection.contains(candidateJComboBox.getSelectedItem()) && !presidentialElection.contains(candidateJComboBox.getSelectedItem())) {
+            return;//hata mesajı ekle
+        }
+        if (municipialElection.contains(candidateJComboBox.getSelectedItem())) {
+            municipialElection.removeElement(candidateJComboBox.getSelectedItem());
+        }
+        if (mukhtarElection.contains(candidateJComboBox.getSelectedItem())) {
+            mukhtarElection.removeElement(candidateJComboBox.getSelectedItem());
+        }
+        if (presidentialElection.contains(candidateJComboBox.getSelectedItem())) {
+            presidentialElection.removeElement(candidateJComboBox.getSelectedItem());
+        }
+
+        if (electionJComboBox.getSelectedItem().toString().equals("Municipial")) {
+            municipialElection.addElement(candidateJComboBox.getSelectedItem());
+        } else if (electionJComboBox.getSelectedItem().toString().equals("Mukhtar")) {
+            mukhtarElection.addElement(candidateJComboBox.getSelectedItem());
+        } else {
+            presidentialElection.addElement(candidateJComboBox.getSelectedItem());
+        }
+
+    }//GEN-LAST:event_updatejButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> candidateJComboBox;
+    private javax.swing.JButton addjButton;
+    private javax.swing.JButton backjButton;
+    private javax.swing.JComboBox<Object> candidateJComboBox;
+    private javax.swing.JComboBox<String> electionJComboBox;
     private com.mery.votingsystem.GradientPanel gradientPanel1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JList<String> jList2;
-    private javax.swing.JList<String> jList3;
-    private javax.swing.JList<String> jList4;
-    private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JList<Object> mukhtarjList;
+    private javax.swing.JList<Object> municipialjList;
+    private javax.swing.JList<Object> presidentialjList;
+    private javax.swing.JButton removejButton;
+    private javax.swing.JButton savejButton1;
+    private javax.swing.JButton updatejButton;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void onPageSet() {
+        refreshCandidate();
+    }
 }

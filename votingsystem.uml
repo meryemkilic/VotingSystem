@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.mery.votingsystem</OriginalElement>
+  <nodes>
+    <node x="1662.0" y="1954.0">com.mery.votingsystem.GradientPanel</node>
+    <node x="781.0" y="2843.0">com.mery.votingsystem.MukhtarElection</node>
+    <node x="1938.0" y="1954.0">com.mery.votingsystem.UserHomePanel</node>
+    <node x="629.0" y="465.0">com.mery.votingsystem.ElectionWinnersPanel</node>
+    <node x="228.0" y="2393.5">com.mery.votingsystem.Admin</node>
+    <node x="1402.0" y="357.0">com.mery.votingsystem.CreateCandidatePanel</node>
+    <node x="969.0" y="2843.0">com.mery.votingsystem.PresidentialElection</node>
+    <node x="1301.0" y="1954.0">com.mery.votingsystem.PresidentialVotingFrame</node>
+    <node x="239.0" y="465.0">com.mery.votingsystem.CreateElectionPanel</node>
+    <node x="2211.0" y="357.0">com.mery.votingsystem.MunicipalVotingFrame</node>
+    <node x="-154.0" y="2609.0">com.mery.votingsystem.MainFrame</node>
+    <node x="1751.0" y="2609.0">com.mery.votingsystem.Vote</node>
+    <node x="1798.0" y="357.0">com.mery.votingsystem.MukhtarVotingFrame</node>
+    <node x="-154.0" y="357.0">com.mery.votingsystem.SignUpPanel</node>
+    <node x="500.0" y="2393.5">com.mery.votingsystem.User</node>
+    <node x="734.0" y="2609.0">com.mery.votingsystem.Election</node>
+    <node x="1204.0" y="2609.0">com.mery.votingsystem.MSK</node>
+    <node x="-154.0" y="2380.0">com.mery.votingsystem.Candidate</node>
+    <node x="227.0" y="1954.0">com.mery.votingsystem.Person</node>
+    <node x="583.0" y="2843.0">com.mery.votingsystem.MunicipalElection</node>
+    <node x="2339.0" y="1954.0">com.mery.votingsystem.CVFrame</node>
+    <node x="2164.0" y="2609.0">com.mery.votingsystem.CV</node>
+    <node x="897.0" y="1954.0">com.mery.votingsystem.LoginPanel</node>
+    <node x="1460.0" y="2609.0">com.mery.votingsystem.City</node>
+    <node x="1022.0" y="357.0">com.mery.votingsystem.CreateUserPanel</node>
+    <node x="1962.0" y="2609.0">com.mery.votingsystem.VotingSystem</node>
+    <node x="193.0" y="2609.0">com.mery.votingsystem.AdminHomePanel</node>
+    <node x="540.0" y="357.0">com.mery.votingsystem.IPanel</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.mery.votingsystem.PresidentialElection" target="com.mery.votingsystem.Election" relationship="GENERALIZATION">
+      <point x="0.0" y="-42.5" />
+      <point x="1064.0" y="2818.0" />
+      <point x="865.0" y="2818.0" />
+      <point x="0.0" y="92.0" />
+    </edge>
+    <edge source="com.mery.votingsystem.ElectionWinnersPanel" target="com.mery.votingsystem.IPanel" relationship="REALIZATION">
+      <point x="0.0" y="-452.0" />
+      <point x="803.0" y="440.0" />
+      <point x="613.5" y="440.0" />
+      <point x="0.0" y="29.0" />
+    </edge>
+    <edge source="com.mery.votingsystem.MukhtarElection" target="com.mery.votingsystem.Election" relationship="GENERALIZATION">
+      <point x="0.0" y="-42.5" />
+      <point x="0.0" y="92.0" />
+    </edge>
+    <edge source="com.mery.votingsystem.Candidate" target="com.mery.votingsystem.Person" relationship="GENERALIZATION">
+      <point x="0.0" y="-92.0" />
+      <point x="27.0" y="2355.0" />
+      <point x="354.0" y="2355.0" />
+      <point x="0.0" y="188.0" />
+    </edge>
+    <edge source="com.mery.votingsystem.User" target="com.mery.votingsystem.Person" relationship="GENERALIZATION">
+      <point x="0.0" y="-78.5" />
+      <point x="676.0" y="2355.0" />
+      <point x="354.0" y="2355.0" />
+      <point x="0.0" y="188.0" />
+    </edge>
+    <edge source="com.mery.votingsystem.CreateElectionPanel" target="com.mery.votingsystem.IPanel" relationship="REALIZATION">
+      <point x="0.0" y="-452.0" />
+      <point x="424.0" y="440.0" />
+      <point x="613.5" y="440.0" />
+      <point x="0.0" y="29.0" />
+    </edge>
+    <edge source="com.mery.votingsystem.MunicipalElection" target="com.mery.votingsystem.Election" relationship="GENERALIZATION">
+      <point x="0.0" y="-42.5" />
+      <point x="672.0" y="2818.0" />
+      <point x="865.0" y="2818.0" />
+      <point x="0.0" y="92.0" />
+    </edge>
+    <edge source="com.mery.votingsystem.Admin" target="com.mery.votingsystem.Person" relationship="GENERALIZATION">
+      <point x="0.0" y="-78.5" />
+      <point x="0.0" y="188.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.15479041916167666" showDependencies="false" x="1222.5" y="1693.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -4,6 +4,9 @@
  */
 package com.mery.votingsystem;
 
+import java.awt.Image;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author merye
@@ -12,9 +15,22 @@ public class CVFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form CVFrame
+     *
+     * @param candidate
+     * @param electionType
      */
-    public CVFrame() {
+    public CVFrame(Candidate candidate, String electionType) {
         initComponents();
+        nameSurnamejLabel.setText(candidate.getFirstName() + " " + candidate.getSurname());
+        cityjLabel.setText(candidate.city.toString());
+        agejLabel.setText(candidate.age + " ");
+        neighjLabel.setText(candidate.neighbourhood);
+        ElectionTypejLabel.setText(electionType);
+            ImageIcon icon2 = new ImageIcon("C:\\Users\\merye\\Downloads\\Daco_416356.png");
+            Image img2 = icon2.getImage().getScaledInstance(150, 200, Image.SCALE_SMOOTH);
+            icon2.setImage(img2);
+            jLabel6.setIcon(icon2);
+        
     }
 
     /**
@@ -27,19 +43,19 @@ public class CVFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         gradientPanel1 = new com.mery.votingsystem.GradientPanel();
-        jLabel1 = new javax.swing.JLabel();
+        nameSurnamejLabel = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        candidacyjLabel = new javax.swing.JLabel();
+        agejLabel = new javax.swing.JLabel();
+        neighjLabel = new javax.swing.JLabel();
+        ElectionTypejLabel = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        cityjLabel = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         gradientPanel2 = new com.mery.votingsystem.GradientPanel();
         gradientPanel3 = new com.mery.votingsystem.GradientPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(17, 45, 78));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -47,11 +63,11 @@ public class CVFrame extends javax.swing.JFrame {
         gradientPanel1.setGradientStart(new java.awt.Color(17, 45, 78));
         gradientPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(249, 247, 247));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel1.setText("Name Surname:");
-        gradientPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 130, 190, 20));
+        nameSurnamejLabel.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        nameSurnamejLabel.setForeground(new java.awt.Color(249, 247, 247));
+        nameSurnamejLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        nameSurnamejLabel.setText("Name Surname:");
+        gradientPanel1.add(nameSurnamejLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 130, 190, 20));
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(249, 247, 247));
@@ -59,29 +75,29 @@ public class CVFrame extends javax.swing.JFrame {
         jLabel4.setText("Neighbourhood:");
         gradientPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 320, 130, 40));
 
-        jLabel5.setFont(new java.awt.Font("SansSerif", 3, 20)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(249, 247, 247));
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("Candidacy:");
-        gradientPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 140, 40));
+        candidacyjLabel.setFont(new java.awt.Font("SansSerif", 3, 20)); // NOI18N
+        candidacyjLabel.setForeground(new java.awt.Color(249, 247, 247));
+        candidacyjLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        candidacyjLabel.setText("Candidacy:");
+        gradientPanel1.add(candidacyjLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 140, 40));
 
-        jLabel6.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(249, 247, 247));
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel6.setText("Age:");
-        gradientPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, 190, 20));
+        agejLabel.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        agejLabel.setForeground(new java.awt.Color(249, 247, 247));
+        agejLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        agejLabel.setText("Age:");
+        gradientPanel1.add(agejLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, 190, 20));
 
-        jLabel7.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(249, 247, 247));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel7.setText("...");
-        gradientPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 320, 170, 30));
+        neighjLabel.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        neighjLabel.setForeground(new java.awt.Color(249, 247, 247));
+        neighjLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        neighjLabel.setText("...");
+        gradientPanel1.add(neighjLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 320, 170, 30));
 
-        jLabel8.setFont(new java.awt.Font("SansSerif", 3, 20)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(249, 247, 247));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("Election Type");
-        gradientPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, 190, 40));
+        ElectionTypejLabel.setFont(new java.awt.Font("SansSerif", 3, 20)); // NOI18N
+        ElectionTypejLabel.setForeground(new java.awt.Color(249, 247, 247));
+        ElectionTypejLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ElectionTypejLabel.setText("Election Type");
+        gradientPanel1.add(ElectionTypejLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 10, 190, 40));
 
         jLabel9.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(249, 247, 247));
@@ -89,11 +105,12 @@ public class CVFrame extends javax.swing.JFrame {
         jLabel9.setText("City:");
         gradientPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 300, 99, 30));
 
-        jLabel10.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(249, 247, 247));
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel10.setText("...");
-        gradientPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 300, 160, 30));
+        cityjLabel.setFont(new java.awt.Font("SansSerif", 1, 16)); // NOI18N
+        cityjLabel.setForeground(new java.awt.Color(249, 247, 247));
+        cityjLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        cityjLabel.setText("...");
+        gradientPanel1.add(cityjLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 300, 160, 30));
+        gradientPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 150, 200));
 
         getContentPane().add(gradientPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 360, 390));
 
@@ -173,23 +190,24 @@ public class CVFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CVFrame().setVisible(true);
+                //new CVFrame().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel ElectionTypejLabel;
+    private javax.swing.JLabel agejLabel;
+    private javax.swing.JLabel candidacyjLabel;
+    private javax.swing.JLabel cityjLabel;
     private com.mery.votingsystem.GradientPanel gradientPanel1;
     private com.mery.votingsystem.GradientPanel gradientPanel2;
     private com.mery.votingsystem.GradientPanel gradientPanel3;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel nameSurnamejLabel;
+    private javax.swing.JLabel neighjLabel;
     // End of variables declaration//GEN-END:variables
 }

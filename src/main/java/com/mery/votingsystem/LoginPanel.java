@@ -6,6 +6,7 @@ package com.mery.votingsystem;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,18 +17,17 @@ public class LoginPanel extends javax.swing.JPanel {
     /**
      * Creates new form loginPage
      */
-     
     
-    public LoginPanel() {        
-        initComponents();  
-        
+    
+    public LoginPanel() {
+        initComponents();
+
         ImageIcon icon2 = new ImageIcon("C:\\Users\\merye\\Downloads\\REPUBLIC OF TÜRKİYE.png");
         Image img2 = icon2.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
         icon2.setImage(img2);
         jLabel6.setIcon(icon2);
     }
 
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,11 +40,11 @@ public class LoginPanel extends javax.swing.JPanel {
         gradientPanel3 = new com.mery.votingsystem.GradientPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        jTextFieldUsername = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jTextFieldPassword = new javax.swing.JTextField();
+        jButtonSignup = new javax.swing.JButton();
+        jButtonSignin = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         gradientPanel1 = new com.mery.votingsystem.GradientPanel();
         gradientPanel2 = new com.mery.votingsystem.GradientPanel();
@@ -70,16 +70,16 @@ public class LoginPanel extends javax.swing.JPanel {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setText("Username:");
 
-        jTextField1.setBackground(new java.awt.Color(214, 230, 242));
-        jTextField1.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jTextField1.setForeground(new java.awt.Color(0, 0, 0));
-        jTextField1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField1.setText("Please enter your username.");
-        jTextField1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-        jTextField1.setPreferredSize(new java.awt.Dimension(162, 20));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldUsername.setBackground(new java.awt.Color(214, 230, 242));
+        jTextFieldUsername.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jTextFieldUsername.setForeground(new java.awt.Color(0, 0, 0));
+        jTextFieldUsername.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextFieldUsername.setText("Please enter your username.");
+        jTextFieldUsername.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        jTextFieldUsername.setPreferredSize(new java.awt.Dimension(162, 20));
+        jTextFieldUsername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                jTextFieldUsernameActionPerformed(evt);
             }
         });
 
@@ -87,33 +87,38 @@ public class LoginPanel extends javax.swing.JPanel {
         jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Password: ");
 
-        jTextField2.setBackground(new java.awt.Color(214, 230, 242));
-        jTextField2.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jTextField2.setForeground(new java.awt.Color(0, 0, 0));
-        jTextField2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jTextField2.setText("Please enter your password.");
-        jTextField2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        jTextFieldPassword.setBackground(new java.awt.Color(214, 230, 242));
+        jTextFieldPassword.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jTextFieldPassword.setForeground(new java.awt.Color(0, 0, 0));
+        jTextFieldPassword.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jTextFieldPassword.setText("Please enter your password.");
+        jTextFieldPassword.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
-        jButton1.setBackground(new java.awt.Color(17, 45, 78));
-        jButton1.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jButton1.setText("Sign Up");
-        jButton1.setAlignmentX(0.5F);
-        jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jButton1.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
-        jButton1.setDefaultCapable(false);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonSignup.setBackground(new java.awt.Color(17, 45, 78));
+        jButtonSignup.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jButtonSignup.setText("Sign Up");
+        jButtonSignup.setAlignmentX(0.5F);
+        jButtonSignup.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButtonSignup.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jButtonSignup.setDebugGraphicsOptions(javax.swing.DebugGraphics.NONE_OPTION);
+        jButtonSignup.setDefaultCapable(false);
+        jButtonSignup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonSignupActionPerformed(evt);
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(17, 45, 78));
-        jButton2.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
-        jButton2.setText("Sign In");
-        jButton2.setAlignmentY(0.0F);
-        jButton2.setAutoscrolls(true);
-        jButton2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButtonSignin.setBackground(new java.awt.Color(17, 45, 78));
+        jButtonSignin.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
+        jButtonSignin.setText("Sign In");
+        jButtonSignin.setAlignmentY(0.0F);
+        jButtonSignin.setAutoscrolls(true);
+        jButtonSignin.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButtonSignin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSigninActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 2, 10)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(17, 45, 78));
@@ -131,12 +136,12 @@ public class LoginPanel extends javax.swing.JPanel {
                         .addGroup(gradientPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(gradientPanel3Layout.createSequentialGroup()
                                 .addGap(92, 92, 92)
-                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jButtonSignin, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(gradientPanel3Layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
+                                .addGap(26, 26, 26)
                                 .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextFieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gradientPanel3Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -144,8 +149,8 @@ public class LoginPanel extends javax.swing.JPanel {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gradientPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jTextFieldUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButtonSignup, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(23, 23, 23))
             .addGroup(gradientPanel3Layout.createSequentialGroup()
                 .addContainerGap()
@@ -160,17 +165,17 @@ public class LoginPanel extends javax.swing.JPanel {
                 .addGap(38, 38, 38)
                 .addGroup(gradientPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(21, 21, 21)
                 .addGroup(gradientPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addGap(26, 26, 26)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonSignin, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonSignup, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -262,13 +267,32 @@ public class LoginPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void jTextFieldUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUsernameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_jTextFieldUsernameActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSignupActionPerformed
+        MainFrame.setPage("signUpPanel");
+    }//GEN-LAST:event_jButtonSignupActionPerformed
+
+    private void jButtonSigninActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSigninActionPerformed
+
+        for (Person person : MSK.people) {
+            if (person.getUserName().equals(jTextFieldUsername.getText()) && person.getPassword().equals(jTextFieldPassword.getText())) {
+                if (person instanceof Admin) {
+                    MainFrame.setPage("adminPanel");
+
+                } else if (person instanceof User) {
+                    MainFrame.setPage("userPanel");
+                }
+                MainFrame.person=person;
+                return;
+            } else {
+            }
+        }
+        JOptionPane.showMessageDialog(this, "This user cannot found!", "User Not Found", JOptionPane.ERROR_MESSAGE);
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonSigninActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -276,15 +300,15 @@ public class LoginPanel extends javax.swing.JPanel {
     private com.mery.votingsystem.GradientPanel gradientPanel2;
     private com.mery.votingsystem.GradientPanel gradientPanel3;
     private com.mery.votingsystem.GradientPanel gradientPanel4;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButtonSignin;
+    private javax.swing.JButton jButtonSignup;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextFieldPassword;
+    private javax.swing.JTextField jTextFieldUsername;
     // End of variables declaration//GEN-END:variables
 }
