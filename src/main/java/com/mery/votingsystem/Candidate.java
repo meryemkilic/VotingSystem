@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Candidate extends Person{
     
-    CV cv;
+    
     int age;
     City city;
     String neighbourhood;
