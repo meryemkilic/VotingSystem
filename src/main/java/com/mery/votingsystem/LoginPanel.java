@@ -1,9 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package com.mery.votingsystem;
 
+import com.mery.votingsystem.jpa.*;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -17,8 +14,6 @@ public class LoginPanel extends javax.swing.JPanel {
     /**
      * Creates new form loginPage
      */
-    
-    
     public LoginPanel() {
         initComponents();
 
@@ -276,22 +271,19 @@ public class LoginPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_jButtonSignupActionPerformed
 
     private void jButtonSigninActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSigninActionPerformed
+        People person = MSK.login(jTextFieldUsername.getText(), jTextFieldPassword.getText());
+        if (person instanceof Admin) {
+            MainFrame.person = person;
+            MainFrame.setPage("adminPanel");
+            System.out.println("asdkfkfjddfkfdk");
 
-        for (Person person : MSK.people) {
-            if (person.getUserName().equals(jTextFieldUsername.getText()) && person.getPassword().equals(jTextFieldPassword.getText())) {
-                if (person instanceof Admin) {
-                    MainFrame.setPage("adminPanel");
-
-                } else if (person instanceof User) {
-                    MainFrame.setPage("userPanel");
-                }
-                MainFrame.person=person;
-                return;
-            } else {
-            }
+        } else if (person instanceof User) {
+            MainFrame.person = person;
+            MainFrame.setPage("userPanel");
+        } else {
+            JOptionPane.showMessageDialog(this, "This user cannot found!", "Not Found", JOptionPane.ERROR_MESSAGE);
         }
-        JOptionPane.showMessageDialog(this, "This user cannot found!", "User Not Found", JOptionPane.ERROR_MESSAGE);
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jButtonSigninActionPerformed
 
 

@@ -4,6 +4,12 @@
  */
 package com.mery.votingsystem;
 
+import com.mery.votingsystem.coreclasses.PresidentialElection;
+import com.mery.votingsystem.coreclasses.Election;
+import com.mery.votingsystem.coreclasses.Candidate;
+import com.mery.votingsystem.coreclasses.Vote;
+import com.mery.votingsystem.coreclasses.User;
+import com.mery.votingsystem.coreclasses.MSK;
 import java.awt.Image;
 import java.awt.event.WindowEvent;
 import javax.swing.DefaultListModel;

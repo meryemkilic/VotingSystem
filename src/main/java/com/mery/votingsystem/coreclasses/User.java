@@ -1,5 +1,5 @@
 
-package com.mery.votingsystem;
+package com.mery.votingsystem.coreclasses;
 
 
 public class User extends Person {

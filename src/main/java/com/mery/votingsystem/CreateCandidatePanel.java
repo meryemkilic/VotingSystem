@@ -4,6 +4,7 @@
  */
 package com.mery.votingsystem;
 
+import com.mery.votingsystem.jpa.*;
 import java.awt.Image;
 import java.io.File;
 import javax.swing.ImageIcon;
@@ -27,8 +28,7 @@ public class CreateCandidatePanel extends javax.swing.JPanel {
     }
 
     public void refreshCity() {
-        jComboBoxCity.removeAllItems();
-        for (City city : MSK.cities) {
+        for (String city : com.mery.votingsystem.jpa.MSK.getCities()) {
             jComboBoxCity.addItem(city);
         }
         jComboBoxCity.setSelectedIndex(0);
@@ -36,8 +36,8 @@ public class CreateCandidatePanel extends javax.swing.JPanel {
 
     public void refreshNeigh() {
         jComboBoxNeigh.removeAllItems();
-        City selectedCity = (City) jComboBoxCity.getSelectedItem();
-        for (String neigh : selectedCity.neighbourhoods) {
+        String selectedCity = (String) jComboBoxCity.getSelectedItem();
+        for (Neighbourhood neigh : MSK.getNeigh(selectedCity)) {
             jComboBoxNeigh.addItem(neigh);
         }
         jComboBoxNeigh.setSelectedIndex(0);
@@ -200,10 +200,8 @@ public class CreateCandidatePanel extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Fill the empty areas!", "Warning", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
         int age;
         try {
-
             age = Integer.parseInt(jTextFieldAge.getText());
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Wrong Information!", "Warning", JOptionPane.ERROR_MESSAGE);
@@ -212,16 +210,23 @@ public class CreateCandidatePanel extends javax.swing.JPanel {
 
         String firstname = jTextFieldName.getText();
         String surname = jTextFieldSurname.getText();
-        City city = (City) jComboBoxCity.getSelectedItem();
-        String neigh = jComboBoxNeigh.getSelectedItem().toString();
-        Candidate candidate = new Candidate(age, city, neigh, surname, firstname, surname, neigh);
-        MSK.people.add(candidate);
+        Neighbourhood neigh = (Neighbourhood) jComboBoxNeigh.getSelectedItem();
+        int region = neigh.getNeighId();
+        Candidate candidate = new Candidate(surname, surname, firstname, surname, age, region);
+        MSK.addPeople(candidate);
 
-        JOptionPane.showMessageDialog(this, "The record has been created!", "Successful", JOptionPane.INFORMATION_MESSAGE);        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "The record has been created!", "Successful", JOptionPane.INFORMATION_MESSAGE);    
+       
+        jTextFieldName.setText("");
+        jTextFieldSurname.setText("");
+        jTextFieldAge.setText("");
     }//GEN-LAST:event_savejButtonActionPerformed
 
     private void backjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backjButtonActionPerformed
         MainFrame.setPage("adminPanel");
+        jTextFieldName.setText("");
+        jTextFieldSurname.setText("");
+        jTextFieldAge.setText("");
     }//GEN-LAST:event_backjButtonActionPerformed
 
     private void jComboBoxCityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCityActionPerformed

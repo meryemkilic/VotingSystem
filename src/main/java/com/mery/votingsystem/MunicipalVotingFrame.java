@@ -4,6 +4,13 @@
  */
 package com.mery.votingsystem;
 
+import com.mery.votingsystem.coreclasses.Election;
+import com.mery.votingsystem.coreclasses.MunicipalElection;
+import com.mery.votingsystem.coreclasses.Candidate;
+import com.mery.votingsystem.coreclasses.Vote;
+import com.mery.votingsystem.coreclasses.User;
+import com.mery.votingsystem.coreclasses.MSK;
+import com.mery.votingsystem.coreclasses.City;
 import java.awt.event.WindowEvent;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;

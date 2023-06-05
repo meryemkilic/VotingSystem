@@ -4,6 +4,13 @@
  */
 package com.mery.votingsystem;
 
+import com.mery.votingsystem.coreclasses.PresidentialElection;
+import com.mery.votingsystem.coreclasses.Election;
+import com.mery.votingsystem.coreclasses.MunicipalElection;
+import com.mery.votingsystem.coreclasses.Candidate;
+import com.mery.votingsystem.coreclasses.MukhtarElection;
+import com.mery.votingsystem.coreclasses.MSK;
+import com.mery.votingsystem.coreclasses.City;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Vector;

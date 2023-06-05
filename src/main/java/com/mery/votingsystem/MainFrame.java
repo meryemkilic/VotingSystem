@@ -4,30 +4,32 @@
  */
 package com.mery.votingsystem;
 
+import com.mery.votingsystem.jpa.*;
 import java.awt.CardLayout;
 import java.awt.Component;
 import javax.swing.JPanel;
 
 public class MainFrame extends javax.swing.JFrame {
-    
-    static Person person;
+
+    static People person;
     LoginPanel loginPanel;
     AdminHomePanel adminPanel;
-    UserHomePanel userPanel;
+//    UserHomePanel userPanel;
     SignUpPanel signUpPanel;
     CreateUserPanel createUserPanel;
     CreateCandidatePanel createCandidatePanel;
     CreateElectionPanel createElectionPanel;
-    ElectionWinnersPanel electionWinnersPanel;
+//    ElectionWinnersPanel electionWinnersPanel;
     static CardLayout cardLayout;
     static JPanel panelCont;
+    private static boolean electionStarted;
 
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
-        MSK.testInit();
+
         cardLayout = new CardLayout();
         panelCont = new JPanel(cardLayout);
         panelCont.setSize(765, 448);
@@ -39,8 +41,8 @@ public class MainFrame extends javax.swing.JFrame {
         loginPanel.setName("loginPanel");
         adminPanel = new AdminHomePanel();
         adminPanel.setName("adminPanel");
-        userPanel = new UserHomePanel();
-        userPanel.setName("userPanel");
+//        userPanel = new UserHomePanel();
+//        userPanel.setName("userPanel");
         signUpPanel = new SignUpPanel();
         signUpPanel.setName("signUpPanel");
         createUserPanel = new CreateUserPanel();
@@ -49,22 +51,22 @@ public class MainFrame extends javax.swing.JFrame {
         createCandidatePanel.setName("createCandidatePanel");
         createElectionPanel = new CreateElectionPanel();
         createElectionPanel.setName("createElectionPanel");
-        electionWinnersPanel = new ElectionWinnersPanel();
-        electionWinnersPanel.setName("electionWinnersPanel");
+//        electionWinnersPanel = new ElectionWinnersPanel();
+//        electionWinnersPanel.setName("electionWinnersPanel");
         panelCont.add(loginPanel, "loginPanel");
         panelCont.add(adminPanel, "adminPanel");
-        panelCont.add(userPanel, "userPanel");
+//        panelCont.add(userPanel, "userPanel");
         panelCont.add(signUpPanel, "signUpPanel");
         panelCont.add(createUserPanel, "createUserPanel");
         panelCont.add(createCandidatePanel, "createCandidatePanel");
         panelCont.add(createElectionPanel, "createElectionPanel");
-        panelCont.add(electionWinnersPanel, "electionWinnersPanel");
+//        panelCont.add(electionWinnersPanel, "electionWinnersPanel");
         cardLayout.show(panelCont, "loginPanel");
-        
+
     }
-    
+
     public static void setPage(String panelName) {
-        
+
         cardLayout.show(panelCont, panelName);
         for (Component component : panelCont.getComponents()) {
             if (component.getName().equals(panelName) && component instanceof IPanel) {
@@ -72,6 +74,14 @@ public class MainFrame extends javax.swing.JFrame {
                 iPanel.onPageSet();
             }
         }
+    }
+
+    public static void setElectionStatus(boolean isStarted) {
+        electionStarted = isStarted;
+    }
+
+    public static boolean getElectionStatus() {
+        return electionStarted;
     }
 
     /**

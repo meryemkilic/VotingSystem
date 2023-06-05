@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.mery.votingsystem;
-
+import com.mery.votingsystem.jpa.*;
 import java.awt.event.WindowEvent;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -24,8 +24,7 @@ public class MukhtarVotingFrame extends javax.swing.JFrame {
     }
 
     public void refreshCity() {
-        jComboBoxCity.removeAllItems();
-        for (City city : MSK.cities) {
+         for (String city : com.mery.votingsystem.jpa.MSK.getCities()) {
             jComboBoxCity.addItem(city);
         }
         jComboBoxCity.setSelectedIndex(0);
@@ -33,8 +32,8 @@ public class MukhtarVotingFrame extends javax.swing.JFrame {
 
     public void refreshNeigh() {
         jComboBoxNeigh.removeAllItems();
-        City selectedCity = (City) jComboBoxCity.getSelectedItem();
-        for (String neigh : selectedCity.neighbourhoods) {
+        String selectedCity = (String) jComboBoxCity.getSelectedItem();
+        for (Neighbourhood neigh : com.mery.votingsystem.jpa.MSK.getNeigh(selectedCity)) {
             jComboBoxNeigh.addItem(neigh);
         }
         jComboBoxNeigh.setSelectedIndex(0);
@@ -177,16 +176,7 @@ public class MukhtarVotingFrame extends javax.swing.JFrame {
 
     private void listCandidatesjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listCandidatesjButtonActionPerformed
         candidateListModel.removeAllElements();
-        for (Election election : MSK.elections) {
-            if (election instanceof MukhtarElection) {
-                MukhtarElection mukhtarElection = (MukhtarElection) election;
-                for (Candidate candidates : mukhtarElection.candidates) {
-                    if (candidates.city.equals(jComboBoxCity.getSelectedItem()) && candidates.neighbourhood.equals(jComboBoxNeigh.getSelectedItem())) {
-                        candidateListModel.addElement(candidates);
-                    }
-                }
-            }
-        }
+    
     }//GEN-LAST:event_listCandidatesjButtonActionPerformed
 
     private void backjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backjButtonActionPerformed

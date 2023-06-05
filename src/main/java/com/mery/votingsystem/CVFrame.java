@@ -4,6 +4,7 @@
  */
 package com.mery.votingsystem;
 
+import com.mery.votingsystem.coreclasses.Candidate;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 

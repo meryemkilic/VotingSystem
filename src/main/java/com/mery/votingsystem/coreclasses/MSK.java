@@ -1,6 +1,8 @@
-package com.mery.votingsystem;
+package com.mery.votingsystem.coreclasses;
 
 import java.util.ArrayList;
+
+
 
 public class MSK {
 

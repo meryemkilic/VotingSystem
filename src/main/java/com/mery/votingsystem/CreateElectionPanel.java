@@ -4,15 +4,16 @@
  */
 package com.mery.votingsystem;
 
+import com.mery.votingsystem.jpa.*;
+import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author merye
- */ 
-
-public class CreateElectionPanel extends javax.swing.JPanel implements IPanel{
+ */
+public class CreateElectionPanel extends javax.swing.JPanel implements IPanel {
 
     /**
      * Creates new form CreateElectionPanel
@@ -29,15 +30,11 @@ public class CreateElectionPanel extends javax.swing.JPanel implements IPanel{
         presidentialjList.setModel(presidentialElection);
 
     }
-    
 
     public void refreshCandidate() {
         candidateJComboBox.removeAllItems();
-        for (Person person : MSK.people) {
-            if (person instanceof Candidate) {
-                Candidate candidate = (Candidate) person;
-                candidateJComboBox.addItem(candidate);
-            }
+        for (Candidate candidate : MSK.getCandidates()) {
+            candidateJComboBox.addItem(candidate);
         }
     }
 
@@ -238,34 +235,42 @@ public class CreateElectionPanel extends javax.swing.JPanel implements IPanel{
     }//GEN-LAST:event_electionJComboBoxActionPerformed
 
     private void savejButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savejButton1ActionPerformed
-      
-        MSK.elections.removeAll(MSK.elections);
+
+        MSK.removeElections();
         MukhtarElection mukhtarElection = new MukhtarElection();
         MunicipalElection municipalElection = new MunicipalElection();
         PresidentialElection presidentialElection = new PresidentialElection();
 
+        ArrayList<ElectionCandidates> mukhtarCandidates = new ArrayList<>();
+        ArrayList<ElectionCandidates> municipalCandidates = new ArrayList<>();
+        ArrayList<ElectionCandidates> presidentialCandidates = new ArrayList<>();
+
         for (int i = 0; i < this.mukhtarElection.size(); i++) {
             Candidate candidate = (Candidate) this.mukhtarElection.get(i);
-            mukhtarElection.candidates.add(candidate);
+            ElectionCandidates electionCandidates = new ElectionCandidates(mukhtarElection, candidate);
+            mukhtarCandidates.add(electionCandidates);
+
         }
         for (int i = 0; i < this.municipialElection.size(); i++) {
             Candidate candidate = (Candidate) this.municipialElection.get(i);
-            municipalElection.candidates.add(candidate);
+            ElectionCandidates electionCandidates = new ElectionCandidates(municipalElection, candidate);
+            municipalCandidates.add(electionCandidates);
         }
         for (int i = 0; i < this.presidentialElection.size(); i++) {
             Candidate candidate = (Candidate) this.presidentialElection.get(i);
-            presidentialElection.candidates.add(candidate);
+            ElectionCandidates electionCandidates = new ElectionCandidates(presidentialElection, candidate);
+            presidentialCandidates.add(electionCandidates);
         }
+        mukhtarElection.setElectionCandidatesList(mukhtarCandidates);
+        municipalElection.setElectionCandidatesList(municipalCandidates);
+        presidentialElection.setElectionCandidatesList(presidentialCandidates);
+        MSK.createElections(mukhtarElection,municipalElection,presidentialElection);
         
-        MSK.elections.add(mukhtarElection);
-        MSK.elections.add(municipalElection);
-        MSK.elections.add(presidentialElection);
-
         JOptionPane.showMessageDialog(this, "The record has been created!", "Successful", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_savejButton1ActionPerformed
 
     private void candidateJComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_candidateJComboBoxActionPerformed
-        
+
     }//GEN-LAST:event_candidateJComboBoxActionPerformed
 
     private void removejButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removejButtonActionPerformed

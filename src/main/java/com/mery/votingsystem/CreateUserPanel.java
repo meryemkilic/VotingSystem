@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package com.mery.votingsystem;
-
+import com.mery.votingsystem.jpa.*;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,9 +21,8 @@ public class CreateUserPanel extends javax.swing.JPanel {
         refreshNeigh();
     }
 
-    public void refreshCity() {
-        jComboBoxCity.removeAllItems();
-        for (City city : MSK.cities) {
+    public void refreshCity() {jComboBoxCity.removeAllItems();
+        for (String city : com.mery.votingsystem.jpa.MSK.getCities()) {
             jComboBoxCity.addItem(city);
         }
         jComboBoxCity.setSelectedIndex(0);
@@ -31,8 +30,8 @@ public class CreateUserPanel extends javax.swing.JPanel {
 
     public void refreshNeigh() {
         jComboBoxNeigh.removeAllItems();
-        City selectedCity = (City) jComboBoxCity.getSelectedItem();
-        for (String neigh : selectedCity.neighbourhoods) {
+        String selectedCity = (String) jComboBoxCity.getSelectedItem();
+        for (Neighbourhood neigh : MSK.getNeigh(selectedCity)) {
             jComboBoxNeigh.addItem(neigh);
         }
         jComboBoxNeigh.setSelectedIndex(0);
@@ -199,6 +198,10 @@ public class CreateUserPanel extends javax.swing.JPanel {
         if (jTextFieldName.getText().isEmpty() || jTextFieldSurname.getText().isEmpty() || jTextFieldPassword.getText().isEmpty() || jTextFieldUsername.getText().isEmpty() || jTextFieldAge.getText().isEmpty() || jTextFieldTC.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Fill the empty areas!", "Warning", JOptionPane.ERROR_MESSAGE);
             return;
+        } 
+        if (MSK.checkUsername(jTextFieldUsername.getText())) {
+            JOptionPane.showMessageDialog(this, "Username already exist!", "Warning", JOptionPane.INFORMATION_MESSAGE);
+            return;
         }
 
         String tc = jTextFieldTC.getText();
@@ -215,16 +218,29 @@ public class CreateUserPanel extends javax.swing.JPanel {
         String surname = jTextFieldSurname.getText();
         String username = jTextFieldUsername.getText();
         String password = jTextFieldPassword.getText();
-        City city = (City) jComboBoxCity.getSelectedItem();
-        String neigh = jComboBoxNeigh.getSelectedItem().toString();
-        User user = new User(age, tc, city, neigh, username, firstname, surname, password);
-        MSK.people.add(user);
+        Neighbourhood neigh = (Neighbourhood) jComboBoxNeigh.getSelectedItem();
+        int region = neigh.getNeighId();
+        User user = new User(username, password, firstname, surname, age, region);
+        MSK.addPeople(user);
 
         JOptionPane.showMessageDialog(this, "The record has been created!", "Successful", JOptionPane.INFORMATION_MESSAGE);
-
+        MainFrame.setPage("adminPanel");
+        
+        jTextFieldTC.setText("");
+        jTextFieldName.setText("");
+        jTextFieldSurname.setText("");
+        jTextFieldAge.setText("");
+        jTextFieldPassword.setText("");
+        jTextFieldUsername.setText("");
     }//GEN-LAST:event_savejButton1ActionPerformed
     private void backjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backjButtonActionPerformed
         MainFrame.setPage("adminPanel");
+        jTextFieldTC.setText("");
+        jTextFieldName.setText("");
+        jTextFieldSurname.setText("");
+        jTextFieldAge.setText("");
+        jTextFieldPassword.setText("");
+        jTextFieldUsername.setText("");
     }//GEN-LAST:event_backjButtonActionPerformed
 
     private void jComboBoxCityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCityActionPerformed
