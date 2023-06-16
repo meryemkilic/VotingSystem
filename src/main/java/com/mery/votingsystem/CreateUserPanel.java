@@ -31,7 +31,7 @@ public class CreateUserPanel extends javax.swing.JPanel {
     public void refreshNeigh() {
         jComboBoxNeigh.removeAllItems();
         String selectedCity = (String) jComboBoxCity.getSelectedItem();
-        for (Neighbourhood neigh : MSK.getNeigh(selectedCity)) {
+        for (Neighbourhood neigh : MSK.getNeighbyCity(selectedCity)) {
             jComboBoxNeigh.addItem(neigh);
         }
         jComboBoxNeigh.setSelectedIndex(0);

@@ -3,8 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.mery.votingsystem;
+
 import com.mery.votingsystem.jpa.*;
 import java.awt.event.WindowEvent;
+import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -24,7 +26,7 @@ public class MukhtarVotingFrame extends javax.swing.JFrame {
     }
 
     public void refreshCity() {
-         for (String city : com.mery.votingsystem.jpa.MSK.getCities()) {
+        for (String city : MSK.getCities()) {
             jComboBoxCity.addItem(city);
         }
         jComboBoxCity.setSelectedIndex(0);
@@ -33,7 +35,7 @@ public class MukhtarVotingFrame extends javax.swing.JFrame {
     public void refreshNeigh() {
         jComboBoxNeigh.removeAllItems();
         String selectedCity = (String) jComboBoxCity.getSelectedItem();
-        for (Neighbourhood neigh : com.mery.votingsystem.jpa.MSK.getNeigh(selectedCity)) {
+        for (Neighbourhood neigh : MSK.getNeighbyCity(selectedCity)) {
             jComboBoxNeigh.addItem(neigh);
         }
         jComboBoxNeigh.setSelectedIndex(0);
@@ -176,7 +178,11 @@ public class MukhtarVotingFrame extends javax.swing.JFrame {
 
     private void listCandidatesjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listCandidatesjButtonActionPerformed
         candidateListModel.removeAllElements();
-    
+        List<Candidate> candidates = MSK.listMukhtarCandidatesbyRegion((Neighbourhood) jComboBoxNeigh.getSelectedItem());
+        for (Candidate candidate : candidates) {
+            candidateListModel.addElement(candidate);
+        }
+
     }//GEN-LAST:event_listCandidatesjButtonActionPerformed
 
     private void backjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backjButtonActionPerformed
@@ -191,45 +197,41 @@ public class MukhtarVotingFrame extends javax.swing.JFrame {
             return;
         }
 //    oy verirken candidatesinin içindeki şehir ve mahalle userın bilgileriyle eşleşmiyorsa hata ver!
-        if (!((User) MainFrame.person).city.equals(jComboBoxCity.getSelectedItem()) || !((User) MainFrame.person).neighbourhood.equals(jComboBoxNeigh.getSelectedItem())) {
-            JOptionPane.showMessageDialog(this, "You can only participate in the elections of the neighborhood you have registered in the system.!", "Attention", JOptionPane.ERROR_MESSAGE);
+        User user = (User) MainFrame.person;
+        Neighbourhood neigh = MSK.getNeighbyId(user.getRegion());
+        if (!neigh.getCity().equals(jComboBoxCity.getSelectedItem()) || !neigh.equals(jComboBoxNeigh.getSelectedItem())) {
+
+            JOptionPane.showMessageDialog(this, "You can only participate in the elections of the neighborhood you have registered in the system!", "Attention", JOptionPane.ERROR_MESSAGE);
+
             return;
         }
 //    birden fazla oy vermeyi kapat!
-        for (Election election : MSK.elections) {
-            if (election instanceof MukhtarElection) {
-                for (Vote vote : ((MukhtarElection) election).votes) {
-                    if (vote.user.equals(MainFrame.person)) {
-                     JOptionPane.showMessageDialog(this, "You cannot vote a second time!", "Attention", JOptionPane.ERROR_MESSAGE);   
-                    return;
-                    }
-                }
-            }
+
+        if (!MSK.isVotedMukhtar(user)) {
+            JOptionPane.showMessageDialog(this, "You cannot vote a second time!", "Attention", JOptionPane.ERROR_MESSAGE);
+            return;
         }
+
 //    yaş sınırını kontrol et (18den küçükse velet kaybol de)!
-    if(((User) MainFrame.person).age<18){
-        JOptionPane.showMessageDialog(this, "You cannot vote!", "Attention", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
+        if (user.getAge() < 18) {
+            JOptionPane.showMessageDialog(this, "You cannot vote!", "Attention", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
 //    oy oluştur!
 //    oyun candidatesini ve userını ayarla.
 //    oyu electiona ver!    
+
         Vote vote = new Vote();
-        vote.candidate = (Candidate) candidatesjList.getSelectedValue();
-        vote.user = (User) MainFrame.person;
-        for (Election election : MSK.elections) {
-            if (election instanceof MukhtarElection) {
-                ((MukhtarElection) election).votes.add(vote);
-            }
-        }
-JOptionPane.showMessageDialog(this, "Your voting process was successful. You can not vote again!", "Successful", JOptionPane.INFORMATION_MESSAGE);
+        vote.setCandidateId((Candidate) candidatesjList.getSelectedValue());
+        vote.setUserId(user);
+        MSK.addVote(vote, "Mukhtar");
+        JOptionPane.showMessageDialog(this, "Your voting process was successful. You can not vote again!", "Successful", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_votejButtonActionPerformed
 
     private void CVjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CVjButtonActionPerformed
-
-        CVFrame cvFrame = new CVFrame(((Candidate)candidatesjList.getSelectedValue()), "Mukhtar Election");
-        cvFrame.dispatchEvent(new WindowEvent(cvFrame,WindowEvent.WINDOW_ACTIVATED));
+        CVFrame cvFrame = new CVFrame(((Candidate) candidatesjList.getSelectedValue()), "Mukhtar Election");
+        cvFrame.dispatchEvent(new WindowEvent(cvFrame, WindowEvent.WINDOW_ACTIVATED));
         cvFrame.show();
     }//GEN-LAST:event_CVjButtonActionPerformed
 

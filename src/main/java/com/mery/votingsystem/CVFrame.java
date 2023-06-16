@@ -4,9 +4,13 @@
  */
 package com.mery.votingsystem;
 
-import com.mery.votingsystem.coreclasses.Candidate;
+import com.mery.votingsystem.jpa.*;
 import java.awt.Image;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -23,15 +27,16 @@ public class CVFrame extends javax.swing.JFrame {
     public CVFrame(Candidate candidate, String electionType) {
         initComponents();
         nameSurnamejLabel.setText(candidate.getFirstName() + " " + candidate.getSurname());
-        cityjLabel.setText(candidate.city.toString());
-        agejLabel.setText(candidate.age + " ");
-        neighjLabel.setText(candidate.neighbourhood);
+        Neighbourhood neighbourhood = MSK.getNeighbyId(candidate.getRegion());
+        cityjLabel.setText(neighbourhood.getCity());
+        agejLabel.setText(candidate.getAge() + " ");
+        neighjLabel.setText(neighbourhood.getNeigh());
         ElectionTypejLabel.setText(electionType);
-            ImageIcon icon2 = new ImageIcon("C:\\Users\\merye\\Downloads\\Daco_416356.png");
-            Image img2 = icon2.getImage().getScaledInstance(150, 200, Image.SCALE_SMOOTH);
-            icon2.setImage(img2);
-            jLabel6.setIcon(icon2);
-        
+        ImageIcon icon2 = new ImageIcon("C:\\Users\\merye\\Downloads\\Daco_416356.png");
+        Image img2 = icon2.getImage().getScaledInstance(150, 200, Image.SCALE_SMOOTH);
+        icon2.setImage(img2);
+        jLabel6.setIcon(icon2);
+
     }
 
     /**
@@ -53,6 +58,7 @@ public class CVFrame extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         cityjLabel = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jButtonDownload = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         gradientPanel2 = new com.mery.votingsystem.GradientPanel();
         gradientPanel3 = new com.mery.votingsystem.GradientPanel();
@@ -113,6 +119,17 @@ public class CVFrame extends javax.swing.JFrame {
         gradientPanel1.add(cityjLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 300, 160, 30));
         gradientPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 150, 200));
 
+        jButtonDownload.setBackground(new java.awt.Color(221, 221, 221));
+        jButtonDownload.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        jButtonDownload.setForeground(new java.awt.Color(17, 45, 78));
+        jButtonDownload.setText("Download");
+        jButtonDownload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDownloadActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(jButtonDownload, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 350, 100, 30));
+
         getContentPane().add(gradientPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 360, 390));
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 1, 36)); // NOI18N
@@ -161,6 +178,29 @@ public class CVFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButtonDownloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDownloadActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        int userChoice = fileChooser.showSaveDialog(null);
+
+        if (userChoice == JFileChooser.APPROVE_OPTION) {
+            String directoryPath = fileChooser.getSelectedFile().getPath();
+            String filename = directoryPath + "CV_" + nameSurnamejLabel.getText() + ".txt";
+
+            String info = ("Election Type: " + ElectionTypejLabel.getText() + "\nName Surname: " + nameSurnamejLabel.getText()
+                    + "\nAge: " + agejLabel.getText() + "\nCity: " + cityjLabel.getText() + "\nNeighbourhood: " + neighjLabel.getText());
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+                writer.write(info);
+                System.out.println("Metin dosyaya yazıldı.");
+            } catch (IOException e) {
+                System.err.println("Dosyaya yazma hatası: " + e.getMessage());
+            }
+        }
+
+    }//GEN-LAST:event_jButtonDownloadActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -204,6 +244,7 @@ public class CVFrame extends javax.swing.JFrame {
     private com.mery.votingsystem.GradientPanel gradientPanel1;
     private com.mery.votingsystem.GradientPanel gradientPanel2;
     private com.mery.votingsystem.GradientPanel gradientPanel3;
+    private javax.swing.JButton jButtonDownload;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;

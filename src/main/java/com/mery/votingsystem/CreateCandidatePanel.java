@@ -28,7 +28,7 @@ public class CreateCandidatePanel extends javax.swing.JPanel {
     }
 
     public void refreshCity() {
-        for (String city : com.mery.votingsystem.jpa.MSK.getCities()) {
+        for (String city : MSK.getCities()) {
             jComboBoxCity.addItem(city);
         }
         jComboBoxCity.setSelectedIndex(0);
@@ -37,7 +37,7 @@ public class CreateCandidatePanel extends javax.swing.JPanel {
     public void refreshNeigh() {
         jComboBoxNeigh.removeAllItems();
         String selectedCity = (String) jComboBoxCity.getSelectedItem();
-        for (Neighbourhood neigh : MSK.getNeigh(selectedCity)) {
+        for (Neighbourhood neigh : MSK.getNeighbyCity(selectedCity)) {
             jComboBoxNeigh.addItem(neigh);
         }
         jComboBoxNeigh.setSelectedIndex(0);

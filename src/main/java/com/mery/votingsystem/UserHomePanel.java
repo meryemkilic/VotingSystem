@@ -7,6 +7,7 @@ package com.mery.votingsystem;
 import java.awt.Image;
 import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -144,11 +145,17 @@ public class UserHomePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_logoutjButtonActionPerformed
 
     private void mukhtarjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mukhtarjButtonActionPerformed
-        MukhtarVotingFrame mukhtarVotingFrame = new MukhtarVotingFrame();
-        mukhtarVotingFrame.dispatchEvent(new WindowEvent(mukhtarVotingFrame,WindowEvent.WINDOW_ACTIVATED));
-        //mukhtarVotingFrame.dispatchEvent(new WindowEvent(mukhtarVotingFrame, WindowEvent.WINDOW_CLOSING));
-        mukhtarVotingFrame.show();
-        
+
+        if (MainFrame.isMukhtarElectionStarted()) {
+            MukhtarVotingFrame mukhtarVotingFrame = new MukhtarVotingFrame();
+            mukhtarVotingFrame.dispatchEvent(new WindowEvent(mukhtarVotingFrame, WindowEvent.WINDOW_ACTIVATED));
+            //mukhtarVotingFrame.dispatchEvent(new WindowEvent(mukhtarVotingFrame, WindowEvent.WINDOW_CLOSING));
+            mukhtarVotingFrame.show();
+        } else{
+            JOptionPane.showMessageDialog(this, "The election is not active!", "Election Status", JOptionPane.INFORMATION_MESSAGE);
+        }
+
+
     }//GEN-LAST:event_mukhtarjButtonActionPerformed
 
     private void showResultjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showResultjButtonActionPerformed
@@ -156,16 +163,25 @@ public class UserHomePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_showResultjButtonActionPerformed
 
     private void municipialjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_municipialjButtonActionPerformed
+        
+        if (MainFrame.isMunicipalElectionStarted()) {
         MunicipalVotingFrame municipalVotingFrame = new MunicipalVotingFrame();
-        municipalVotingFrame.dispatchEvent(new WindowEvent(municipalVotingFrame,WindowEvent.WINDOW_ACTIVATED));
+        municipalVotingFrame.dispatchEvent(new WindowEvent(municipalVotingFrame, WindowEvent.WINDOW_ACTIVATED));
         //mukhtarVotingFrame.dispatchEvent(new WindowEvent(mukhtarVotingFrame, WindowEvent.WINDOW_CLOSING));
         municipalVotingFrame.show();
+        } else{
+            JOptionPane.showMessageDialog(this, "The election is not active!", "Election Status", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_municipialjButtonActionPerformed
 
     private void presidentialjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_presidentialjButtonActionPerformed
-        PresidentialVotingFrame presidentialVotingFrame= new PresidentialVotingFrame();
-        presidentialVotingFrame.dispatchEvent(new WindowEvent(presidentialVotingFrame,WindowEvent.WINDOW_ACTIVATED));
+        if (MainFrame.isPresidentialElectionStarted()) {
+        PresidentialVotingFrame presidentialVotingFrame = new PresidentialVotingFrame();
+        presidentialVotingFrame.dispatchEvent(new WindowEvent(presidentialVotingFrame, WindowEvent.WINDOW_ACTIVATED));
         presidentialVotingFrame.show();
+        } else{
+            JOptionPane.showMessageDialog(this, "The election is not active!", "Election Status", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_presidentialjButtonActionPerformed
 
 

@@ -1,0 +1,5 @@
+Election Type: Presidential Election
+Name Surname: Zahid Esad Baltacı
+Age: 20 
+City: Haliç
+Neighbourhood: D Blok

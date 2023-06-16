@@ -4,14 +4,9 @@
  */
 package com.mery.votingsystem;
 
-import com.mery.votingsystem.coreclasses.Election;
-import com.mery.votingsystem.coreclasses.MunicipalElection;
-import com.mery.votingsystem.coreclasses.Candidate;
-import com.mery.votingsystem.coreclasses.Vote;
-import com.mery.votingsystem.coreclasses.User;
-import com.mery.votingsystem.coreclasses.MSK;
-import com.mery.votingsystem.coreclasses.City;
+import com.mery.votingsystem.jpa.*;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -25,18 +20,20 @@ public class MunicipalVotingFrame extends javax.swing.JFrame {
      * Creates new form MunicipalVotingFrame
      */
     DefaultListModel<Object> candidateListModel = new DefaultListModel<>();
+
     public MunicipalVotingFrame() {
         initComponents();
         refreshCity();
         candidatesjList.setModel(candidateListModel);
     }
+
     public void refreshCity() {
-        jComboBoxCity.removeAllItems();
-        for (City city : MSK.cities) {
+        for (String city : MSK.getCities()) {
             jComboBoxCity.addItem(city);
         }
         jComboBoxCity.setSelectedIndex(0);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -164,16 +161,19 @@ public class MunicipalVotingFrame extends javax.swing.JFrame {
 
     private void listCandidatesjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listCandidatesjButtonActionPerformed
         candidateListModel.removeAllElements();
-        for (Election election : MSK.elections) {
-            if (election instanceof MunicipalElection) {
-                MunicipalElection municipalElection = (MunicipalElection) election;
-                for (Candidate candidates : municipalElection.candidates) {
-                    if (candidates.city.equals(jComboBoxCity.getSelectedItem())) {
-                        candidateListModel.addElement(candidates);
-                    }
-                }
+        Elections election = MSK.getElections("Municipal");
+        ArrayList<Candidate> candidates = new ArrayList<>();
+        election.getElectionCandidatesList().forEach((electionCandidates) -> {
+            candidates.add(electionCandidates.getCandidateId());
+        });
+
+        for (Candidate candidate : candidates) {
+            String city = MSK.getNeighbyId(candidate.getRegion()).getCity();
+            if (city.equals(jComboBoxCity.getSelectedItem())) {
+                candidateListModel.addElement(candidate);
             }
         }
+
     }//GEN-LAST:event_listCandidatesjButtonActionPerformed
 
     private void jComboBoxCityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCityActionPerformed
@@ -192,43 +192,37 @@ public class MunicipalVotingFrame extends javax.swing.JFrame {
             return;
         }
 //    oy verirken candidatesinin içindeki şehir ve mahalle userın bilgileriyle eşleşmiyorsa hata ver!
-        if (!((User) MainFrame.person).city.equals(jComboBoxCity.getSelectedItem())) {
-            JOptionPane.showMessageDialog(this, "You can only participate in the elections of the neighborhood you have registered in the system.!", "Attention", JOptionPane.ERROR_MESSAGE);
+
+        User user = (User) MainFrame.person;
+        Neighbourhood neigh = MSK.getNeighbyId(user.getRegion());
+        if (!neigh.getCity().equals(jComboBoxCity.getSelectedItem())) {
+
+            JOptionPane.showMessageDialog(this, "You can only participate in the elections of the city you have registered in the system!", "Attention", JOptionPane.ERROR_MESSAGE);
+
             return;
         }
 //    birden fazla oy vermeyi kapat!
-        for (Election election : MSK.elections) {
-            if (election instanceof MunicipalElection) {
-                for (Vote vote : ((MunicipalElection) election).votes) {
-                    if (vote.user.equals(MainFrame.person)) {
-                     JOptionPane.showMessageDialog(this, "You cannot vote a second time!", "Attention", JOptionPane.ERROR_MESSAGE);   
-                    return;
-                    }
-                }
-            }
+        if (!MSK.isVotedMunicipal(user)) {
+            JOptionPane.showMessageDialog(this, "You cannot vote a second time!", "Attention", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 //    yaş sınırını kontrol et (18den küçükse velet kaybol de)!
-    if(((User) MainFrame.person).age<18){
-        JOptionPane.showMessageDialog(this, "You cannot vote!", "Attention", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
+        if (user.getAge() < 18) {
+            JOptionPane.showMessageDialog(this, "You cannot vote!", "Attention", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
         Vote vote = new Vote();
-        vote.candidate = (Candidate) candidatesjList.getSelectedValue();
-        vote.user = (User) MainFrame.person;
-        for (Election election : MSK.elections) {
-            if (election instanceof MunicipalElection) {
-                ((MunicipalElection) election).votes.add(vote);
-            }
-        }
-    JOptionPane.showMessageDialog(this, "Your voting process was successful. You can not vote again!", "Successful", JOptionPane.ERROR_MESSAGE);
+        vote.setCandidateId((Candidate) candidatesjList.getSelectedValue());
+        vote.setUserId(user);
+        MSK.addVote(vote, "Municipal");
+        JOptionPane.showMessageDialog(this, "Your voting process was successful. You can not vote again!", "Successful", JOptionPane.INFORMATION_MESSAGE);
 
     }//GEN-LAST:event_votejButtonActionPerformed
 
     private void CVjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CVjButtonActionPerformed
-        CVFrame cvFrame = new CVFrame(((Candidate)candidatesjList.getSelectedValue()), "Municipal Election");
-        cvFrame.dispatchEvent(new WindowEvent(cvFrame,WindowEvent.WINDOW_ACTIVATED));
+        CVFrame cvFrame = new CVFrame(((Candidate) candidatesjList.getSelectedValue()), "Municipal Election");
+        cvFrame.dispatchEvent(new WindowEvent(cvFrame, WindowEvent.WINDOW_ACTIVATED));
         cvFrame.show();
     }//GEN-LAST:event_CVjButtonActionPerformed
 

@@ -4,13 +4,7 @@
  */
 package com.mery.votingsystem;
 
-import com.mery.votingsystem.coreclasses.PresidentialElection;
-import com.mery.votingsystem.coreclasses.Election;
-import com.mery.votingsystem.coreclasses.MunicipalElection;
-import com.mery.votingsystem.coreclasses.Candidate;
-import com.mery.votingsystem.coreclasses.MukhtarElection;
-import com.mery.votingsystem.coreclasses.MSK;
-import com.mery.votingsystem.coreclasses.City;
+import com.mery.votingsystem.jpa.*;
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -45,9 +39,7 @@ public class ElectionWinnersPanel extends javax.swing.JPanel implements IPanel {
     }
 
     public void refreshCity() {
-        jComboBoxCity.removeAllItems();
-        jComboBoxCity.addItem("All");
-        for (City city : MSK.cities) {
+        for (String city : MSK.getCities()) {
             jComboBoxCity.addItem(city);
         }
         jComboBoxCity.setSelectedIndex(0);
@@ -55,22 +47,44 @@ public class ElectionWinnersPanel extends javax.swing.JPanel implements IPanel {
 
     public void refreshNeigh() {
         jComboBoxNeigh.removeAllItems();
-        if (jComboBoxCity.getSelectedItem().equals("All")) {
-            jComboBoxNeigh.addItem("All");
-            return;
-        }
-        City selectedCity = (City) jComboBoxCity.getSelectedItem();
-        jComboBoxNeigh.addItem("All");
-        for (String neigh : selectedCity.neighbourhoods) {
+        String selectedCity = (String) jComboBoxCity.getSelectedItem();
+        for (Neighbourhood neigh : MSK.getNeighbyCity(selectedCity)) {
             jComboBoxNeigh.addItem(neigh);
         }
         jComboBoxNeigh.setSelectedIndex(0);
     }
 
+//    public void refreshTable() {
+//        tableModel.setRowCount(0);
+//        for (Elections election : MSK.elections) {
+//            for (Candidate candidate : election.candidates) {
+//                Vector vector = new Vector();
+//
+//                if (election instanceof MukhtarElection) {
+//                    vector.add("Mukhtar");
+//                } else if (election instanceof MunicipalElection) {
+//                    vector.add("Municipal");
+//                } else if (election instanceof PresidentialElection) {
+//                    vector.add("Presidential");
+//                }
+//                vector.add(candidate.city);
+//                vector.add(candidate.neighbourhood);
+//                vector.add(candidate.getFirstName() + " " + candidate.getSurname());
+//
+//                if (candidate.status()) {
+//                    vector.add("Winner");
+//                } else {
+//                    vector.add("Loser");
+//                }
+//                vector.add(election.voteCalculator(candidate));
+//                tableModel.addRow(vector);
+//            }
+//        }
+//    }
     public void refreshTable() {
         tableModel.setRowCount(0);
-        for (Election election : MSK.elections) {
-            for (Candidate candidate : election.candidates) {
+        for (Elections election : MSK.getElections()) {
+            for (ElectionCandidates electionCandidates : election.getElectionCandidatesList()) {
                 Vector vector = new Vector();
 
                 if (election instanceof MukhtarElection) {
@@ -80,141 +94,266 @@ public class ElectionWinnersPanel extends javax.swing.JPanel implements IPanel {
                 } else if (election instanceof PresidentialElection) {
                     vector.add("Presidential");
                 }
-                vector.add(candidate.city);
-                vector.add(candidate.neighbourhood);
-                vector.add(candidate.getFirstName() + " " + candidate.getSurname());
+                Neighbourhood neighbourhood = MSK.getNeighbyId(electionCandidates.getCandidateId().getRegion());
+                vector.add(neighbourhood.getCity());
+                vector.add(neighbourhood);
+                vector.add(electionCandidates.getCandidateId().toString());
 
-                if (candidate.status()) {
+                if (electionCandidates.getWinner()) {
                     vector.add("Winner");
                 } else {
                     vector.add("Loser");
                 }
-                vector.add(election.voteCalculator(candidate));
+                vector.add(electionCandidates.getCandidateId().getVoteList().size());
                 tableModel.addRow(vector);
             }
         }
     }
 
+//    public void enRefreshTable() {
+//        tableModel.setRowCount(0);
+//        for (Candidate candidate : whichCandidate()) {
+//            Election election = null;
+//            for (Election elections : MSK.elections) {
+//                if (elections.candidates.contains(candidate)) {
+//                    election = elections;
+//                }
+//            }
+//            Vector vector = new Vector();
+//            if (election instanceof MukhtarElection) {
+//                vector.add("Mukhtar");
+//            } else if (election instanceof MunicipalElection) {
+//                vector.add("Municipal");
+//            } else if (election instanceof PresidentialElection) {
+//                vector.add("Presidential");
+//            }
+//            vector.add(candidate.city);
+//            vector.add(candidate.neighbourhood);
+//            vector.add(candidate.getFirstName() + " " + candidate.getSurname());
+//
+//            if (candidate.status()) {
+//                vector.add("Winner");
+//            } else {
+//                vector.add("Loser");
+//            }
+//            vector.add(election.voteCalculator(candidate));
+//            tableModel.addRow(vector);
+//        }
+//    }
     public void enRefreshTable() {
         tableModel.setRowCount(0);
-        for (Candidate candidate : whichCandidate()) {
-            Election election = null;
-            for (Election elections : MSK.elections) {
-                if (elections.candidates.contains(candidate)) {
-                    election = elections;
-                }
-            }
+        for (ElectionCandidates electionCandidates : whichCandidate()) {
+
             Vector vector = new Vector();
-            if (election instanceof MukhtarElection) {
+            if (electionCandidates.getElectionId() instanceof MukhtarElection) {
                 vector.add("Mukhtar");
-            } else if (election instanceof MunicipalElection) {
+            } else if (electionCandidates.getElectionId() instanceof MunicipalElection) {
                 vector.add("Municipal");
-            } else if (election instanceof PresidentialElection) {
+            } else if (electionCandidates.getElectionId() instanceof PresidentialElection) {
                 vector.add("Presidential");
             }
-            vector.add(candidate.city);
-            vector.add(candidate.neighbourhood);
-            vector.add(candidate.getFirstName() + " " + candidate.getSurname());
+            Neighbourhood neighbourhood = MSK.getNeighbyId(electionCandidates.getCandidateId().getRegion());
+            vector.add(neighbourhood.getCity());
+            vector.add(neighbourhood);
+            vector.add(electionCandidates.getCandidateId().toString());
 
-            if (candidate.status()) {
+            if (electionCandidates.getWinner()) {
                 vector.add("Winner");
             } else {
                 vector.add("Loser");
             }
-            vector.add(election.voteCalculator(candidate));
+            vector.add(electionCandidates.getCandidateId().getVoteList().size());
             tableModel.addRow(vector);
         }
     }
 
-    public ArrayList<Candidate> winnerOrLoser() {
-        ArrayList<Candidate> result = new ArrayList<>();
+//
+//    public ArrayList<Candidate> winnerOrLoser() {
+//        ArrayList<Candidate> result = new ArrayList<>();
+//        if (((winnerjRadioButton.isSelected() && losersjRadioButton.isSelected())) || (!winnerjRadioButton.isSelected() && !losersjRadioButton.isSelected())) {
+//            for (Election election : MSK.elections) {
+//                result.addAll(election.candidates);
+//            }
+//        } else if (winnerjRadioButton.isSelected() && !losersjRadioButton.isSelected()) {
+//            for (Election election : MSK.elections) {
+//                for (Candidate candidate : election.candidates) {
+//                    if (candidate.status()) {
+//                        result.add(candidate);
+//                    }
+//                }
+//            }
+//        } else if (!winnerjRadioButton.isSelected() && losersjRadioButton.isSelected()) {
+//            for (Election election : MSK.elections) {
+//                for (Candidate candidate : election.candidates) {
+//                    if (!candidate.status()) {
+//                        result.add(candidate);
+//                    }
+//                }
+//            }
+//        }
+//        return result;
+//    }
+    public ArrayList<ElectionCandidates> winnerOrLoser() {
+        ArrayList<ElectionCandidates> result = new ArrayList<>();
         if (((winnerjRadioButton.isSelected() && losersjRadioButton.isSelected())) || (!winnerjRadioButton.isSelected() && !losersjRadioButton.isSelected())) {
-            for (Election election : MSK.elections) {
-                result.addAll(election.candidates);
+            for (Elections election : MSK.getElections()) {
+                for (ElectionCandidates electionCandidates : election.getElectionCandidatesList()) {
+                    result.add(electionCandidates);
+                }
             }
         } else if (winnerjRadioButton.isSelected() && !losersjRadioButton.isSelected()) {
-            for (Election election : MSK.elections) {
-                for (Candidate candidate : election.candidates) {
-                    if (candidate.status()) {
-                        result.add(candidate);
+            for (Elections election : MSK.getElections()) {
+                for (ElectionCandidates electionCandidates : election.getElectionCandidatesList()) {
+                    if (electionCandidates.getWinner()) {
+                        result.add(electionCandidates);
                     }
                 }
             }
         } else if (!winnerjRadioButton.isSelected() && losersjRadioButton.isSelected()) {
-            for (Election election : MSK.elections) {
-                for (Candidate candidate : election.candidates) {
-                    if (!candidate.status()) {
-                        result.add(candidate);
+            for (Elections election : MSK.getElections()) {
+                for (ElectionCandidates electionCandidates : election.getElectionCandidatesList()) {
+                    if (!electionCandidates.getWinner()) {
+                        result.add(electionCandidates);
                     }
                 }
             }
         }
         return result;
     }
+    //
+    //    public ArrayList<Candidate> whichCity() {
+    //        ArrayList<Candidate> oldResult = winnerOrLoser();
+    //        ArrayList<Candidate> result = new ArrayList<>();
+    //
+    //        if (jComboBoxCity.getSelectedItem().equals("All")) {
+    //            return oldResult;
+    //        }
+    //        for (Candidate candidate : oldResult) {
+    //            if (!(candidate == null) && candidate.city.equals(jComboBoxCity.getSelectedItem())) {
+    //                result.add(candidate);
+    //            }
+    //        }
+    //        return result;
+    //    }
 
-    public ArrayList<Candidate> whichCity() {
-        ArrayList<Candidate> oldResult = winnerOrLoser();
-        ArrayList<Candidate> result = new ArrayList<>();
+    public ArrayList<ElectionCandidates> whichCity() {
+        ArrayList<ElectionCandidates> oldResult = winnerOrLoser();
+        ArrayList<ElectionCandidates> result = new ArrayList<>();
 
         if (jComboBoxCity.getSelectedItem().equals("All")) {
             return oldResult;
         }
-        for (Candidate candidate : oldResult) {
-            if (!(candidate == null) && candidate.city.equals(jComboBoxCity.getSelectedItem())) {
-                result.add(candidate);
+        for (ElectionCandidates electionCandidates : oldResult) {
+            Neighbourhood neigh = MSK.getNeighbyId(electionCandidates.getCandidateId().getRegion());
+            if (!(electionCandidates == null) && neigh.getCity().equals(jComboBoxCity.getSelectedItem())) {
+                result.add(electionCandidates);
             }
         }
         return result;
     }
 
-    public ArrayList<Candidate> whichNeigh() {
-        ArrayList<Candidate> oldResult = whichCity();
-        ArrayList<Candidate> result = new ArrayList<>();
+//
+//    public ArrayList<Candidate> whichNeigh() {
+//        ArrayList<Candidate> oldResult = whichCity();
+//        ArrayList<Candidate> result = new ArrayList<>();
+//
+//        if (jComboBoxNeigh.getSelectedItem().equals("All")) {
+//            return oldResult;
+//        }
+//        for (Candidate candidate : oldResult) {
+//            if (candidate.neighbourhood.equals(jComboBoxNeigh.getSelectedItem())) {
+//                result.add(candidate);
+//            }
+//        }
+//        return result;
+//    }
+//
+    public ArrayList<ElectionCandidates> whichNeigh() {
+        ArrayList<ElectionCandidates> oldResult = whichCity();
+        ArrayList<ElectionCandidates> result = new ArrayList<>();
 
         if (jComboBoxNeigh.getSelectedItem().equals("All")) {
             return oldResult;
         }
-        for (Candidate candidate : oldResult) {
-            if (candidate.neighbourhood.equals(jComboBoxNeigh.getSelectedItem())) {
-                result.add(candidate);
+        for (ElectionCandidates electionCandidates : oldResult) {
+            if (electionCandidates.getCandidateId().getRegion() == (((Neighbourhood) jComboBoxNeigh.getSelectedItem()).getNeighId())) {
+                result.add(electionCandidates);
             }
         }
         return result;
     }
 
-    public ArrayList<Candidate> whichElection() {
-        ArrayList<Candidate> oldResult = whichNeigh();
-        ArrayList<Candidate> result = new ArrayList<>();
+//    public ArrayList<Candidate> whichElection() {
+//        ArrayList<Candidate> oldResult = whichNeigh();
+//        ArrayList<Candidate> result = new ArrayList<>();
+//
+//        if (electionTypeJComboBox.getSelectedItem().equals("All")) {
+//            return oldResult;
+//        }
+//        for (Candidate candidate : oldResult) {
+//            for (Election election : MSK.elections) {
+//                if ((election instanceof MukhtarElection) && (electionTypeJComboBox.getSelectedItem().equals("Mukhtar Election")) && election.candidates.contains(candidate)) {
+//                    result.add(candidate);
+//                } else if ((election instanceof MunicipalElection) && (electionTypeJComboBox.getSelectedItem().equals("Municipal Election")) && election.candidates.contains(candidate)) {
+//                    result.add(candidate);
+//                } else if ((election instanceof PresidentialElection) && electionTypeJComboBox.getSelectedItem().equals("Presidential Election") && election.candidates.contains(candidate)) {
+//                    result.add(candidate);
+//                }
+//            }
+//        }
+//        return result;
+//    }
+    public ArrayList<ElectionCandidates> whichElection() {
+        ArrayList<ElectionCandidates> oldResult = whichNeigh();
+        ArrayList<ElectionCandidates> result = new ArrayList<>();
 
         if (electionTypeJComboBox.getSelectedItem().equals("All")) {
             return oldResult;
         }
-        for (Candidate candidate : oldResult) {
-            for (Election election : MSK.elections) {
-                if ((election instanceof MukhtarElection) && (electionTypeJComboBox.getSelectedItem().equals("Mukhtar Election")) && election.candidates.contains(candidate)) {
-                    result.add(candidate);
-                } else if ((election instanceof MunicipalElection) && (electionTypeJComboBox.getSelectedItem().equals("Municipal Election")) && election.candidates.contains(candidate)) {
-                    result.add(candidate);
-                } else if ((election instanceof PresidentialElection) && electionTypeJComboBox.getSelectedItem().equals("Presidential Election") && election.candidates.contains(candidate)) {
-                    result.add(candidate);
-                }
+        for (ElectionCandidates electionCandidates : oldResult) {
+
+            if ((electionCandidates.getElectionId() instanceof MukhtarElection) && (electionTypeJComboBox.getSelectedItem().equals("Mukhtar Election"))) {
+                result.add(electionCandidates);
+            } else if ((electionCandidates.getElectionId() instanceof MunicipalElection) && (electionTypeJComboBox.getSelectedItem().equals("Municipal Election"))) {
+                result.add(electionCandidates);
+            } else if ((electionCandidates.getElectionId() instanceof PresidentialElection) && (electionTypeJComboBox.getSelectedItem().equals("Presidential Election"))) {
+                result.add(electionCandidates);
             }
+
         }
         return result;
     }
+//
+//    public ArrayList<Candidate> whichCandidate() {
+//        ArrayList<Candidate> oldResult = whichElection();
+//        ArrayList<Candidate> result = new ArrayList<>();
+//
+//        if (candidatejTextField.getText().equals("")) {
+//            return oldResult;
+//        } else {
+//            Pattern pattern = Pattern.compile(candidatejTextField.getText());
+//            for (Candidate candidate : oldResult) {
+//                Matcher matcher = pattern.matcher(candidate.toString());
+//                if (matcher.find()) {
+//                    result.add(candidate);
+//                }
+//            }
+//        }
+//        return result;
+//    }
 
-    public ArrayList<Candidate> whichCandidate() {
-        ArrayList<Candidate> oldResult = whichElection();
-        ArrayList<Candidate> result = new ArrayList<>();
+    public ArrayList<ElectionCandidates> whichCandidate() {
+        ArrayList<ElectionCandidates> oldResult = whichElection();
+        ArrayList<ElectionCandidates> result = new ArrayList<>();
 
         if (candidatejTextField.getText().equals("")) {
             return oldResult;
         } else {
             Pattern pattern = Pattern.compile(candidatejTextField.getText());
-            for (Candidate candidate : oldResult) {
-                Matcher matcher = pattern.matcher(candidate.toString());
+            for (ElectionCandidates electionCandidates : oldResult) {
+                Matcher matcher = pattern.matcher(electionCandidates.toString());
                 if (matcher.find()) {
-                    result.add(candidate);
+                    result.add(electionCandidates);
                 }
             }
         }
@@ -407,7 +546,7 @@ public class ElectionWinnersPanel extends javax.swing.JPanel implements IPanel {
     private com.mery.votingsystem.GradientPanel gradientPanel1;
     private com.mery.votingsystem.GradientPanel gradientPanel2;
     private javax.swing.JComboBox<Object> jComboBoxCity;
-    private javax.swing.JComboBox<String> jComboBoxNeigh;
+    private javax.swing.JComboBox<Object> jComboBoxNeigh;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -423,9 +562,7 @@ public class ElectionWinnersPanel extends javax.swing.JPanel implements IPanel {
 
     @Override
     public void onPageSet() {
-        for (Election election : MSK.elections) {
-            election.findWinner();
-        }
+        MSK.findWinner();
         refreshTable();
     }
 }

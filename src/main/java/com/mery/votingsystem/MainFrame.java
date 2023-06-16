@@ -14,15 +14,17 @@ public class MainFrame extends javax.swing.JFrame {
     static People person;
     LoginPanel loginPanel;
     AdminHomePanel adminPanel;
-//    UserHomePanel userPanel;
+    UserHomePanel userPanel;
     SignUpPanel signUpPanel;
     CreateUserPanel createUserPanel;
     CreateCandidatePanel createCandidatePanel;
     CreateElectionPanel createElectionPanel;
-//    ElectionWinnersPanel electionWinnersPanel;
+    ElectionWinnersPanel electionWinnersPanel;
     static CardLayout cardLayout;
     static JPanel panelCont;
-    private static boolean electionStarted;
+    private static boolean mukhtarElectionStarted;
+    private static boolean municipalElectionStarted;
+    private static boolean presidentialElectionStarted;
 
     /**
      * Creates new form MainFrame
@@ -41,8 +43,8 @@ public class MainFrame extends javax.swing.JFrame {
         loginPanel.setName("loginPanel");
         adminPanel = new AdminHomePanel();
         adminPanel.setName("adminPanel");
-//        userPanel = new UserHomePanel();
-//        userPanel.setName("userPanel");
+        userPanel = new UserHomePanel();
+        userPanel.setName("userPanel");
         signUpPanel = new SignUpPanel();
         signUpPanel.setName("signUpPanel");
         createUserPanel = new CreateUserPanel();
@@ -51,16 +53,16 @@ public class MainFrame extends javax.swing.JFrame {
         createCandidatePanel.setName("createCandidatePanel");
         createElectionPanel = new CreateElectionPanel();
         createElectionPanel.setName("createElectionPanel");
-//        electionWinnersPanel = new ElectionWinnersPanel();
-//        electionWinnersPanel.setName("electionWinnersPanel");
+        electionWinnersPanel = new ElectionWinnersPanel();
+        electionWinnersPanel.setName("electionWinnersPanel");
         panelCont.add(loginPanel, "loginPanel");
         panelCont.add(adminPanel, "adminPanel");
-//        panelCont.add(userPanel, "userPanel");
+        panelCont.add(userPanel, "userPanel");
         panelCont.add(signUpPanel, "signUpPanel");
         panelCont.add(createUserPanel, "createUserPanel");
         panelCont.add(createCandidatePanel, "createCandidatePanel");
         panelCont.add(createElectionPanel, "createElectionPanel");
-//        panelCont.add(electionWinnersPanel, "electionWinnersPanel");
+        panelCont.add(electionWinnersPanel, "electionWinnersPanel");
         cardLayout.show(panelCont, "loginPanel");
 
     }
@@ -76,12 +78,28 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
-    public static void setElectionStatus(boolean isStarted) {
-        electionStarted = isStarted;
+    public static boolean isMukhtarElectionStarted() {
+        return mukhtarElectionStarted;
     }
 
-    public static boolean getElectionStatus() {
-        return electionStarted;
+    public static void setMukhtarElectionStarted(boolean mukhtarElectionStarted) {
+        MainFrame.mukhtarElectionStarted = mukhtarElectionStarted;
+    }
+
+    public static boolean isMunicipalElectionStarted() {
+        return municipalElectionStarted;
+    }
+
+    public static void setMunicipalElectionStarted(boolean municipalElectionStarted) {
+        MainFrame.municipalElectionStarted = municipalElectionStarted;
+    }
+
+    public static boolean isPresidentialElectionStarted() {
+        return presidentialElectionStarted;
+    }
+
+    public static void setPresidentialElectionStarted(boolean presidentialElectionStarted) {
+        MainFrame.presidentialElectionStarted = presidentialElectionStarted;
     }
 
     /**

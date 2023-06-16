@@ -52,7 +52,7 @@ public class MSK {
 
     }
 
-    public static List<Neighbourhood> getNeigh(String city) {
+    public static List<Neighbourhood> getNeighbyCity(String city) {
         emf = Persistence.createEntityManagerFactory("MSK");
         em = emf.createEntityManager();
 
@@ -71,7 +71,6 @@ public class MSK {
         em.getTransaction().commit();
         em.close();
         emf.close();
-
     }
 
     public static boolean checkUsername(String username) {
@@ -118,13 +117,233 @@ public class MSK {
         for (Elections election : elections) {
             em.persist(election);
         }
-        
         em.getTransaction().commit();
         em.close();
         emf.close();
     }
-    
-    public static List<MukhtarElection> listMukhtarCandidate(){
-        
+
+//    public static List<MukhtarElection> listMukhtarCandidate(){
+//        return;
+//    }
+    public static Neighbourhood getNeighbyId(int id) {
+        emf = Persistence.createEntityManagerFactory("MSK");
+        em = emf.createEntityManager();
+
+        Neighbourhood neigh = em.createNamedQuery("Neighbourhood.findByNeighId", Neighbourhood.class).setParameter("neighId", id).getSingleResult();
+
+        em.close();
+        emf.close();
+
+        return neigh;
+    }
+
+    public static boolean isVotedMukhtar(User user) {
+        emf = Persistence.createEntityManagerFactory("MSK");
+        em = emf.createEntityManager();
+
+        Vote vote = null;
+
+        try {
+            vote = em.createQuery("SELECT v FROM Vote v WHERE v.userId.id=:userId AND v.electionId.electionType= 'Mukhtar'",
+                    Vote.class).setParameter("userId", user.getId()).getSingleResult();
+
+        } catch (Exception e) {
+            return true;
+        }
+        em.close();
+        emf.close();
+
+        if (vote == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static List<Candidate> listMukhtarCandidatesbyRegion(Neighbourhood region) {
+        emf = Persistence.createEntityManagerFactory("MSK");
+        em = emf.createEntityManager();
+        //List<Candidate> candidates= em.createQuery("SELECT v FROM Candidate ", type)
+        Elections election = em.createQuery("SELECT e FROM Elections e WHERE e.electionType= 'Mukhtar'", Elections.class).getSingleResult();
+        List<Candidate> candidates = new ArrayList<>();
+        for (ElectionCandidates electionCandidate : election.getElectionCandidatesList()) {
+            if (electionCandidate.getCandidateId().getRegion() == region.getNeighId()) {
+                candidates.add(electionCandidate.getCandidateId());
+            }
+        }
+        em.close();
+        emf.close();
+        return candidates;
+    }
+
+    public static void addVote(Vote vote, String electionType) {
+        emf = Persistence.createEntityManagerFactory("MSK");
+        em = emf.createEntityManager();
+        em.getTransaction().begin();
+
+        Elections election = em.createQuery("SELECT e FROM Elections e WHERE e.electionType =:electionType",
+                Elections.class).setParameter("electionType", electionType).getSingleResult();
+        vote.setElectionId(election);
+        election.getVoteList().add(vote);
+        em.persist(vote);
+        em.getTransaction().commit();
+        em.close();
+        emf.close();
+    }
+
+    public static List<Candidate> listMunicipalCandidatesbyRegion(Neighbourhood region) {
+        emf = Persistence.createEntityManagerFactory("MSK");
+        em = emf.createEntityManager();
+        //List<Candidate> candidates= em.createQuery("SELECT v FROM Candidate ", type)
+        Elections election = em.createQuery("SELECT e FROM Elections e WHERE e.electionType= 'Municipal'",
+                Elections.class).getSingleResult();
+        List<Candidate> candidates = new ArrayList<>();
+        for (ElectionCandidates electionCandidate : election.getElectionCandidatesList()) {
+            if (electionCandidate.getCandidateId().getRegion() == region.getNeighId()) {
+                candidates.add(electionCandidate.getCandidateId());
+            }
+        }
+        em.close();
+        emf.close();
+        return candidates;
+    }
+
+    public static Elections getElections(String electionType) {
+        emf = Persistence.createEntityManagerFactory("MSK");
+        em = emf.createEntityManager();
+
+        Elections election = em.createQuery("SELECT e FROM Elections e WHERE e.electionType=:electionType",
+                Elections.class).setParameter("electionType", electionType).getSingleResult();
+
+        em.close();
+        emf.close();
+        return election;
+    }
+
+    public static boolean isVotedMunicipal(User user) {
+        emf = Persistence.createEntityManagerFactory("MSK");
+        em = emf.createEntityManager();
+
+        Vote vote = null;
+
+        try {
+            vote = em.createQuery("SELECT v FROM Vote v WHERE v.userId.id=:userId AND v.electionId.electionType= 'Municipal'",
+                    Vote.class).setParameter("userId", user.getId()).getSingleResult();
+
+        } catch (Exception e) {
+            return true;
+        }
+        em.close();
+        emf.close();
+
+        if (vote == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isVotedPresidential(User user) {
+        emf = Persistence.createEntityManagerFactory("MSK");
+        em = emf.createEntityManager();
+
+        Vote vote = null;
+
+        try {
+            vote = em.createQuery("SELECT v FROM Vote v WHERE v.userId.id=:userId AND v.electionId.electionType= 'Presidential'",
+                    Vote.class).setParameter("userId", user.getId()).getSingleResult();
+
+        } catch (Exception e) {
+            return true;
+        }
+        em.close();
+        emf.close();
+
+        if (vote == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static List<Elections> getElections() {
+        emf = Persistence.createEntityManagerFactory("MSK");
+        em = emf.createEntityManager();
+
+        List<Elections> elections = em.createNamedQuery("Elections.findAll", Elections.class).getResultList();
+
+        em.close();
+        emf.close();
+        return elections;
+
+    }
+
+    public static Integer getVotesCount(ElectionCandidates electionCandidates) {
+        emf = Persistence.createEntityManagerFactory("MSK");
+        em = emf.createEntityManager();
+
+        List<Vote> votes = em.createQuery("SELECT v FROM Vote v WHERE v.candidateId=:candidateId", Vote.class).getResultList();
+
+        em.close();
+        emf.close();
+        return votes.size();
+    }
+
+    public static void findWinner() {
+        emf = Persistence.createEntityManagerFactory("MSK");
+        em = emf.createEntityManager();
+        em.getTransaction().begin();
+
+        for (Elections election : getElections()) {
+            if (election instanceof PresidentialElection) {
+                int winnerVotes = 0;
+                ElectionCandidates Winner = null;
+                for (ElectionCandidates electionCandidates : election.getElectionCandidatesList()) {
+                    if (electionCandidates.getCandidateId().getVoteList().size() > winnerVotes) {
+                        winnerVotes = electionCandidates.getCandidateId().getVoteList().size();
+                        Winner = electionCandidates;
+                    }
+                }
+                Winner.setWinner(true);
+                em.persist(Winner);
+
+            } else if (election instanceof MunicipalElection) {
+                for (String city : getCities()) {
+                    int winnerVotes = 0;
+                    ElectionCandidates Winner = null;
+                    for (ElectionCandidates electionCandidates : election.getElectionCandidatesList()) {
+                        Neighbourhood neighbourhood = getNeighbyId(electionCandidates.getCandidateId().getRegion());
+                        if (neighbourhood.getCity().equals(city)) {
+                            if (electionCandidates.getCandidateId().getVoteList().size() > winnerVotes) {
+                                winnerVotes = electionCandidates.getCandidateId().getVoteList().size();
+                                Winner = electionCandidates;
+                            }
+                        }
+                    }
+                    Winner.setWinner(true);
+                    em.persist(Winner);
+                }
+
+            } else if (election instanceof MukhtarElection) {
+                List<Neighbourhood> neighbourhoods = em.createNamedQuery("Neighbourhood.findAll", Neighbourhood.class).getResultList();
+                for (Neighbourhood neighbourhood : neighbourhoods) {
+                    int winnerVotes = 0;
+                    ElectionCandidates Winner = null;
+                    for (ElectionCandidates electionCandidates : election.getElectionCandidatesList()) {
+                        if (electionCandidates.getCandidateId().getRegion() == neighbourhood.getNeighId()) {
+                            if (electionCandidates.getCandidateId().getVoteList().size() > winnerVotes) {
+                                winnerVotes = electionCandidates.getCandidateId().getVoteList().size();
+                                Winner = electionCandidates;
+                            }
+                        }
+                    }
+                    Winner.setWinner(true);
+                    em.persist(Winner);
+                }
+            }
+        }
+        em.getTransaction().commit();
+        em.close();
+        emf.close();
     }
 }

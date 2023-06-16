@@ -4,14 +4,10 @@
  */
 package com.mery.votingsystem;
 
-import com.mery.votingsystem.coreclasses.PresidentialElection;
-import com.mery.votingsystem.coreclasses.Election;
-import com.mery.votingsystem.coreclasses.Candidate;
-import com.mery.votingsystem.coreclasses.Vote;
-import com.mery.votingsystem.coreclasses.User;
-import com.mery.votingsystem.coreclasses.MSK;
+import com.mery.votingsystem.jpa.*;
 import java.awt.Image;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -39,13 +35,15 @@ public class PresidentialVotingFrame extends javax.swing.JFrame {
 
     public void listCandidates() {
         candidateListModel.removeAllElements();
-        for (Election election : MSK.elections) {
-            if (election instanceof PresidentialElection) {
-                PresidentialElection presidentialElection = (PresidentialElection) election;
-                for (Candidate candidates : presidentialElection.candidates) {
-                    candidateListModel.addElement(candidates);
-                }
-            }
+
+        Elections election = MSK.getElections("Presidential");
+        ArrayList<Candidate> candidates = new ArrayList<>();
+        election.getElectionCandidatesList().forEach((electionCandidates) -> {
+            candidates.add(electionCandidates.getCandidateId());
+        });
+
+        for (Candidate candidate : candidates) {
+            candidateListModel.addElement(candidate);
         }
     }
 
@@ -151,45 +149,35 @@ public class PresidentialVotingFrame extends javax.swing.JFrame {
 
     private void votejButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_votejButtonActionPerformed
 //    oy verirken candidates seçmediyse (null) hata ver!
+
+        User user = (User) MainFrame.person;
         if (candidatesjList.getSelectedIndex() == -1) {
             JOptionPane.showMessageDialog(this, "Please select the candidate you will vote for!", "Missing Information", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
 //    birden fazla oy vermeyi kapat!
-        for (Election election : MSK.elections) {
-            if (election instanceof PresidentialElection) {
-                for (Vote vote : ((PresidentialElection) election).votes) {
-                    if (vote.user.equals(MainFrame.person)) {
-                     JOptionPane.showMessageDialog(this, "You cannot vote a second time!", "Attention", JOptionPane.ERROR_MESSAGE);   
-                    return;
-                    }
-                }
-            }
+        if (!MSK.isVotedPresidential(user)) {
+            JOptionPane.showMessageDialog(this, "You cannot vote a second time!", "Attention", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 //    yaş sınırını kontrol et (18den küçükse velet kaybol de)!
-    if(((User) MainFrame.person).age<18){
-        JOptionPane.showMessageDialog(this, "You cannot vote!", "Attention", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-
+        if (user.getAge() < 18) {
+            JOptionPane.showMessageDialog(this, "You cannot vote!", "Attention", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
         Vote vote = new Vote();
-        vote.candidate = (Candidate) candidatesjList.getSelectedValue();
-        vote.user = (User) MainFrame.person;
-        for (Election election : MSK.elections) {
-            if (election instanceof PresidentialElection) {
-                ((PresidentialElection) election).votes.add(vote);
-            }
-        }
-        JOptionPane.showMessageDialog(this, "Your voting process was successful. You can not vote again!", "Successful", JOptionPane.ERROR_MESSAGE);
+        vote.setCandidateId((Candidate) candidatesjList.getSelectedValue());
+        vote.setUserId(user);
+        MSK.addVote(vote, "Presidential");
+        JOptionPane.showMessageDialog(this, "Your voting process was successful. You can not vote again!", "Successful", JOptionPane.INFORMATION_MESSAGE);
 
     }//GEN-LAST:event_votejButtonActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        CVFrame cvFrame = new CVFrame(((Candidate)candidatesjList.getSelectedValue()), "Presidential Election");
-        cvFrame.dispatchEvent(new WindowEvent(cvFrame,WindowEvent.WINDOW_ACTIVATED));
+        CVFrame cvFrame = new CVFrame(((Candidate) candidatesjList.getSelectedValue()), "Presidential Election");
+        cvFrame.dispatchEvent(new WindowEvent(cvFrame, WindowEvent.WINDOW_ACTIVATED));
         cvFrame.show();
     }//GEN-LAST:event_jButton3ActionPerformed
 
