@@ -5,8 +5,12 @@
 package com.mery.votingsystem;
 
 import com.mery.votingsystem.jpa.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,16 +22,16 @@ public class CreateElectionPanel extends javax.swing.JPanel implements IPanel {
     /**
      * Creates new form CreateElectionPanel
      */
-    DefaultListModel<Object> municipialElection = new DefaultListModel<>();
-    DefaultListModel<Object> mukhtarElection = new DefaultListModel<>();
-    DefaultListModel<Object> presidentialElection = new DefaultListModel<>();
+    DefaultListModel<Object> municipialCandidateListModel = new DefaultListModel<>();
+    DefaultListModel<Object> mukhtarCandidateListModel = new DefaultListModel<>();
+    DefaultListModel<Object> presidentialCandidateListModel = new DefaultListModel<>();
 
     public CreateElectionPanel() {
         initComponents();
         refreshCandidate();
-        municipialjList.setModel(municipialElection);
-        mukhtarjList.setModel(mukhtarElection);
-        presidentialjList.setModel(presidentialElection);
+        municipialjList.setModel(municipialCandidateListModel);
+        mukhtarjList.setModel(mukhtarCandidateListModel);
+        presidentialjList.setModel(presidentialCandidateListModel);
 
     }
 
@@ -35,6 +39,28 @@ public class CreateElectionPanel extends javax.swing.JPanel implements IPanel {
         candidateJComboBox.removeAllItems();
         for (Candidate candidate : MSK.getCandidates()) {
             candidateJComboBox.addItem(candidate);
+        }
+    }
+
+    public void refreshList() {
+        municipialCandidateListModel.removeAllElements();
+        mukhtarCandidateListModel.removeAllElements();
+        presidentialCandidateListModel.removeAllElements();
+
+        for (Elections election : MSK.getElections()) {
+            if (election instanceof MukhtarElection) {
+                election.getElectionCandidatesList().forEach((electionCandidates) -> {
+                    mukhtarCandidateListModel.addElement(electionCandidates.getCandidateId());
+                });
+            } else if (election instanceof MunicipalElection) {
+                election.getElectionCandidatesList().forEach((electionCandidates) -> {
+                    municipialCandidateListModel.addElement(electionCandidates.getCandidateId());
+                });
+            } else if (election instanceof PresidentialElection) {
+                election.getElectionCandidatesList().forEach((electionCandidates) -> {
+                    presidentialCandidateListModel.addElement(electionCandidates.getCandidateId());
+                });
+            }
         }
     }
 
@@ -218,15 +244,16 @@ public class CreateElectionPanel extends javax.swing.JPanel implements IPanel {
     }//GEN-LAST:event_backjButtonActionPerformed
 
     private void addjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addjButtonActionPerformed
-        if (municipialElection.contains(candidateJComboBox.getSelectedItem()) || mukhtarElection.contains(candidateJComboBox.getSelectedItem()) || presidentialElection.contains(candidateJComboBox.getSelectedItem())) {
-            return;//hata mesajı ekle
+        if (municipialCandidateListModel.contains(candidateJComboBox.getSelectedItem()) || mukhtarCandidateListModel.contains(candidateJComboBox.getSelectedItem()) || presidentialCandidateListModel.contains(candidateJComboBox.getSelectedItem())) {
+            JOptionPane.showMessageDialog(this, "Election already contains the seleceted candidate!", "Attention", JOptionPane.ERROR_MESSAGE);
+            return;
         }
         if (electionJComboBox.getSelectedItem().toString().equals("Municipial")) {
-            municipialElection.addElement(candidateJComboBox.getSelectedItem());
+            municipialCandidateListModel.addElement(candidateJComboBox.getSelectedItem());
         } else if (electionJComboBox.getSelectedItem().toString().equals("Mukhtar")) {
-            mukhtarElection.addElement(candidateJComboBox.getSelectedItem());
+            mukhtarCandidateListModel.addElement(candidateJComboBox.getSelectedItem());
         } else {
-            presidentialElection.addElement(candidateJComboBox.getSelectedItem());
+            presidentialCandidateListModel.addElement(candidateJComboBox.getSelectedItem());
         }
     }//GEN-LAST:event_addjButtonActionPerformed
 
@@ -235,6 +262,16 @@ public class CreateElectionPanel extends javax.swing.JPanel implements IPanel {
     }//GEN-LAST:event_electionJComboBoxActionPerformed
 
     private void savejButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_savejButton1ActionPerformed
+
+        if (MainFrame.isMukhtarElectionStarted() || MainFrame.isMunicipalElectionStarted() || MainFrame.isPresidentialElectionStarted()) {
+            JOptionPane.showMessageDialog(this, "There is an active election!", "Attention", JOptionPane.ERROR_MESSAGE);
+            return;
+        } else {
+            if ((JOptionPane.showConfirmDialog(this, "You are about to override last elections!\nDo you want to archive election records? ",
+                    "Are You Sure ?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)) {
+
+            }
+        }
 
         MSK.removeElections();
         MukhtarElection mukhtarElection = new MukhtarElection();
@@ -245,27 +282,27 @@ public class CreateElectionPanel extends javax.swing.JPanel implements IPanel {
         ArrayList<ElectionCandidates> municipalCandidates = new ArrayList<>();
         ArrayList<ElectionCandidates> presidentialCandidates = new ArrayList<>();
 
-        for (int i = 0; i < this.mukhtarElection.size(); i++) {
-            Candidate candidate = (Candidate) this.mukhtarElection.get(i);
+        for (int i = 0; i < this.mukhtarCandidateListModel.size(); i++) {
+            Candidate candidate = (Candidate) this.mukhtarCandidateListModel.get(i);
             ElectionCandidates electionCandidates = new ElectionCandidates(mukhtarElection, candidate);
             mukhtarCandidates.add(electionCandidates);
 
         }
-        for (int i = 0; i < this.municipialElection.size(); i++) {
-            Candidate candidate = (Candidate) this.municipialElection.get(i);
+        for (int i = 0; i < this.municipialCandidateListModel.size(); i++) {
+            Candidate candidate = (Candidate) this.municipialCandidateListModel.get(i);
             ElectionCandidates electionCandidates = new ElectionCandidates(municipalElection, candidate);
             municipalCandidates.add(electionCandidates);
         }
-        for (int i = 0; i < this.presidentialElection.size(); i++) {
-            Candidate candidate = (Candidate) this.presidentialElection.get(i);
+        for (int i = 0; i < this.presidentialCandidateListModel.size(); i++) {
+            Candidate candidate = (Candidate) this.presidentialCandidateListModel.get(i);
             ElectionCandidates electionCandidates = new ElectionCandidates(presidentialElection, candidate);
             presidentialCandidates.add(electionCandidates);
         }
         mukhtarElection.setElectionCandidatesList(mukhtarCandidates);
         municipalElection.setElectionCandidatesList(municipalCandidates);
         presidentialElection.setElectionCandidatesList(presidentialCandidates);
-        MSK.createElections(mukhtarElection,municipalElection,presidentialElection);
-        
+        MSK.createElections(mukhtarElection, municipalElection, presidentialElection);
+
         JOptionPane.showMessageDialog(this, "The record has been created!", "Successful", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_savejButton1ActionPerformed
 
@@ -276,37 +313,37 @@ public class CreateElectionPanel extends javax.swing.JPanel implements IPanel {
     private void removejButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removejButtonActionPerformed
 
         if (municipialjList.getSelectedIndex() != -1) {
-            municipialElection.removeElementAt(municipialjList.getSelectedIndex());
+            municipialCandidateListModel.removeElementAt(municipialjList.getSelectedIndex());
         }
         if (mukhtarjList.getSelectedIndex() != -1) {
-            mukhtarElection.removeElementAt(mukhtarjList.getSelectedIndex());
+            mukhtarCandidateListModel.removeElementAt(mukhtarjList.getSelectedIndex());
         }
         if (presidentialjList.getSelectedIndex() != -1) {
-            presidentialElection.removeElementAt(presidentialjList.getSelectedIndex());
+            presidentialCandidateListModel.removeElementAt(presidentialjList.getSelectedIndex());
         }
 
     }//GEN-LAST:event_removejButtonActionPerformed
 
     private void updatejButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatejButtonActionPerformed
-        if (!municipialElection.contains(candidateJComboBox.getSelectedItem()) && !mukhtarElection.contains(candidateJComboBox.getSelectedItem()) && !presidentialElection.contains(candidateJComboBox.getSelectedItem())) {
+        if (!municipialCandidateListModel.contains(candidateJComboBox.getSelectedItem()) && !mukhtarCandidateListModel.contains(candidateJComboBox.getSelectedItem()) && !presidentialCandidateListModel.contains(candidateJComboBox.getSelectedItem())) {
             return;//hata mesajı ekle
         }
-        if (municipialElection.contains(candidateJComboBox.getSelectedItem())) {
-            municipialElection.removeElement(candidateJComboBox.getSelectedItem());
+        if (municipialCandidateListModel.contains(candidateJComboBox.getSelectedItem())) {
+            municipialCandidateListModel.removeElement(candidateJComboBox.getSelectedItem());
         }
-        if (mukhtarElection.contains(candidateJComboBox.getSelectedItem())) {
-            mukhtarElection.removeElement(candidateJComboBox.getSelectedItem());
+        if (mukhtarCandidateListModel.contains(candidateJComboBox.getSelectedItem())) {
+            mukhtarCandidateListModel.removeElement(candidateJComboBox.getSelectedItem());
         }
-        if (presidentialElection.contains(candidateJComboBox.getSelectedItem())) {
-            presidentialElection.removeElement(candidateJComboBox.getSelectedItem());
+        if (presidentialCandidateListModel.contains(candidateJComboBox.getSelectedItem())) {
+            presidentialCandidateListModel.removeElement(candidateJComboBox.getSelectedItem());
         }
 
         if (electionJComboBox.getSelectedItem().toString().equals("Municipial")) {
-            municipialElection.addElement(candidateJComboBox.getSelectedItem());
+            municipialCandidateListModel.addElement(candidateJComboBox.getSelectedItem());
         } else if (electionJComboBox.getSelectedItem().toString().equals("Mukhtar")) {
-            mukhtarElection.addElement(candidateJComboBox.getSelectedItem());
+            mukhtarCandidateListModel.addElement(candidateJComboBox.getSelectedItem());
         } else {
-            presidentialElection.addElement(candidateJComboBox.getSelectedItem());
+            presidentialCandidateListModel.addElement(candidateJComboBox.getSelectedItem());
         }
 
     }//GEN-LAST:event_updatejButtonActionPerformed
@@ -340,5 +377,80 @@ public class CreateElectionPanel extends javax.swing.JPanel implements IPanel {
     @Override
     public void onPageSet() {
         refreshCandidate();
+        refreshList();
+    }
+
+    public void downloadArchive() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        int userChoice = fileChooser.showSaveDialog(null);
+
+        if (userChoice == JFileChooser.APPROVE_OPTION) {
+            String directoryPath = fileChooser.getSelectedFile().getPath();
+            String filename = directoryPath + "Election_Records.txt";
+
+            ArrayList<String> infoPresidential = new ArrayList<>();
+            ArrayList<String> infoMunicipal = new ArrayList<>();
+            ArrayList<String> infoMukhtar = new ArrayList<>();
+
+            for (Elections election : MSK.getElections()) {
+
+                if (election instanceof PresidentialElection) {
+                    infoPresidential.add(election.getElectionId() + " - " + election.getElectionType());
+                    for (ElectionCandidates electionCandidates : election.getElectionCandidatesList()) {
+                        if (electionCandidates.getWinner()) {
+                            infoPresidential.add(electionCandidates.getCandidateId().toString() + " - is winner.");
+                        } else {
+                            infoPresidential.add(electionCandidates.getCandidateId().toString() + " - is not winner.");
+                        }
+                    }
+                    infoPresidential.add("-      -       -       -       -       -       -       -      -");
+                    
+                } else if (election instanceof MunicipalElection) {
+                    infoMunicipal.add(election.getElectionId() + " - " + election.getElectionType());
+                    for (String city : MSK.getCities()) {
+                        infoMunicipal.add("City: " + city);
+                        for (Neighbourhood neighbourhood : MSK.getNeighbyCity(city)) {
+
+                            for (ElectionCandidates electionCandidates : MSK.listMunicipalCandidatebyRegion(neighbourhood)) {
+                                if (electionCandidates.getWinner()) {
+                                    infoMunicipal.add(electionCandidates.getCandidateId().toString() + " - is winner.");
+                                } else {
+                                    infoMunicipal.add(electionCandidates.getCandidateId().toString() + " - is not winner.");
+                                }
+                            }
+                        }
+                    }
+                    infoMunicipal.add("-      -       -       -       -       -       -       -      -");
+                    
+                } else if (election instanceof MukhtarElection) {
+                    infoMukhtar.add(election.getElectionId() + " - " + election.getElectionType());
+                    for (String city : MSK.getCities()) {
+                        infoMukhtar.add("City: " + city);
+                        for (Neighbourhood neighbourhood : MSK.getNeighbyCity(city)) {
+                            infoMukhtar.add("Neighbourhood: " + neighbourhood.getNeigh());
+
+                            for (ElectionCandidates electionCandidates : MSK.listMukhtarCandidatebyRegion(neighbourhood)) {
+                                if (electionCandidates.getWinner()) {
+                                    infoMukhtar.add(electionCandidates.getCandidateId().toString() + " - is winner.");
+                                } else {
+                                    infoMukhtar.add(electionCandidates.getCandidateId().toString() + " - is not winner.");
+                                }
+                            }
+                        }
+                    }
+                    infoMunicipal.add("-      -       -       -       -       -       -       -      -");
+                }
+            }
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+                writer.write();
+                
+                System.out.println("Metin dosyaya yazıldı.");
+            } catch (IOException e) {
+                System.err.println("Dosyaya yazma hatası: " + e.getMessage());
+            }
+        }
     }
 }
