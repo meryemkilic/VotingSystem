@@ -269,7 +269,7 @@ public class CreateElectionPanel extends javax.swing.JPanel implements IPanel {
         } else {
             if ((JOptionPane.showConfirmDialog(this, "You are about to override last elections!\nDo you want to archive election records? ",
                     "Are You Sure ?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)) {
-
+                downloadArchive();
             }
         }
 
@@ -406,7 +406,7 @@ public class CreateElectionPanel extends javax.swing.JPanel implements IPanel {
                         }
                     }
                     infoPresidential.add("-      -       -       -       -       -       -       -      -");
-                    
+
                 } else if (election instanceof MunicipalElection) {
                     infoMunicipal.add(election.getElectionId() + " - " + election.getElectionType());
                     for (String city : MSK.getCities()) {
@@ -423,7 +423,7 @@ public class CreateElectionPanel extends javax.swing.JPanel implements IPanel {
                         }
                     }
                     infoMunicipal.add("-      -       -       -       -       -       -       -      -");
-                    
+
                 } else if (election instanceof MukhtarElection) {
                     infoMukhtar.add(election.getElectionId() + " - " + election.getElectionType());
                     for (String city : MSK.getCities()) {
@@ -445,8 +445,21 @@ public class CreateElectionPanel extends javax.swing.JPanel implements IPanel {
             }
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-                writer.write();
-                
+
+                for (String string : infoMukhtar) {
+                    writer.write(string);
+                    writer.newLine();
+
+                }
+                for (String string : infoMunicipal) {
+                    writer.write(string);
+                    writer.newLine();
+                }
+                for (String string : infoPresidential) {
+                    writer.write(string);
+                    writer.newLine();
+                }
+
                 System.out.println("Metin dosyaya yazıldı.");
             } catch (IOException e) {
                 System.err.println("Dosyaya yazma hatası: " + e.getMessage());

@@ -148,7 +148,7 @@ public class MSK {
 
         return candidates;
     }
-    
+
     public static List<ElectionCandidates> listMukhtarCandidatebyRegion(Neighbourhood region) {
 
         //List<Candidate> candidates= em.createQuery("SELECT v FROM Candidate ", type)
@@ -190,7 +190,7 @@ public class MSK {
 
         return candidates;
     }
-    
+
     public static List<ElectionCandidates> listMunicipalCandidatebyRegion(Neighbourhood region) {
 
         //List<Candidate> candidates= em.createQuery("SELECT v FROM Candidate ", type)
@@ -207,10 +207,13 @@ public class MSK {
     }
 
     public static Elections getElections(String electionType) {
-
-        Elections election = em.createQuery("SELECT e FROM Elections e WHERE e.electionType=:electionType",
-                Elections.class).setParameter("electionType", electionType).getSingleResult();
-
+        Elections election = null;
+        try {
+            election = em.createQuery("SELECT e FROM Elections e WHERE e.electionType=:electionType",
+                    Elections.class).setParameter("electionType", electionType).getSingleResult();
+        } catch (Exception e) {
+            System.out.println("hahahahah");
+        }
         return election;
     }
 
@@ -262,7 +265,7 @@ public class MSK {
 
     public static Integer getVotesCount(ElectionCandidates electionCandidates) {
 
-        List<Vote> votes = em.createQuery("SELECT v FROM Vote v WHERE v.candidateId=:candidateId", Vote.class).getResultList();
+        List<Vote> votes = em.createQuery("SELECT v FROM Vote v WHERE v.candidateId=:candidateId", Vote.class).setParameter("candidateId", electionCandidates.getCandidateId()).getResultList();
 
         return votes.size();
     }
@@ -282,9 +285,9 @@ public class MSK {
                     }
                 }
                 if (Winner != null) {
-                        Winner.setWinner(true);
-                        em.persist(Winner);
-                    }
+                    Winner.setWinner(true);
+                    em.persist(Winner);
+                }
 
             } else if (election instanceof MunicipalElection) {
                 for (String city : getCities()) {
@@ -327,5 +330,18 @@ public class MSK {
         }
         em.getTransaction().commit();
 
+    }
+
+    public static void removeCandidates(Candidate candidate) {
+        em.getTransaction().begin();
+        Candidate candidates = em.find(Candidate.class,candidate.getId());
+        for (Vote vote : candidate.getVoteList()) {
+            em.remove(vote);
+        }
+        for (ElectionCandidates electionCandidates : candidate.getElectionCandidatesList()) {
+            em.remove(electionCandidates);
+        }
+        em.remove(candidates);
+        em.getTransaction().commit();
     }
 }

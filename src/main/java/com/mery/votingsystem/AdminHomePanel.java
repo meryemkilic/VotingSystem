@@ -6,6 +6,7 @@ package com.mery.votingsystem;
 
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -37,7 +38,7 @@ public class AdminHomePanel extends javax.swing.JPanel {
         gradientPanel1 = new com.mery.votingsystem.GradientPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        candidatejButton = new javax.swing.JButton();
+        createCandidatejButton = new javax.swing.JButton();
         UserjButton = new javax.swing.JButton();
         logoutjButton = new javax.swing.JButton();
         gradientPanel2 = new com.mery.votingsystem.GradientPanel();
@@ -47,9 +48,10 @@ public class AdminHomePanel extends javax.swing.JPanel {
         mukhtarjCheckBox = new javax.swing.JCheckBox();
         municipaljCheckBox = new javax.swing.JCheckBox();
         presidentialStatusjLabel = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         mukhtarStatusjLabel = new javax.swing.JLabel();
         municipalStatusjLabel = new javax.swing.JLabel();
+        removeCandidatejButton = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(219, 226, 239));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -67,16 +69,16 @@ public class AdminHomePanel extends javax.swing.JPanel {
         jLabel1.setText("jLabel1");
         gradientPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, 200, 200));
 
-        candidatejButton.setBackground(new java.awt.Color(17, 45, 78));
-        candidatejButton.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
-        candidatejButton.setText("Create Candidate");
-        candidatejButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        candidatejButton.addActionListener(new java.awt.event.ActionListener() {
+        createCandidatejButton.setBackground(new java.awt.Color(17, 45, 78));
+        createCandidatejButton.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
+        createCandidatejButton.setText("Create Candidate");
+        createCandidatejButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        createCandidatejButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                candidatejButtonActionPerformed(evt);
+                createCandidatejButtonActionPerformed(evt);
             }
         });
-        gradientPanel1.add(candidatejButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 290, 220, 50));
+        gradientPanel1.add(createCandidatejButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 270, 220, 40));
 
         UserjButton.setBackground(new java.awt.Color(17, 45, 78));
         UserjButton.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
@@ -87,7 +89,7 @@ public class AdminHomePanel extends javax.swing.JPanel {
                 UserjButtonActionPerformed(evt);
             }
         });
-        gradientPanel1.add(UserjButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 290, 170, 50));
+        gradientPanel1.add(UserjButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 370, 220, 40));
 
         logoutjButton.setBackground(new java.awt.Color(17, 45, 78));
         logoutjButton.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
@@ -114,7 +116,7 @@ public class AdminHomePanel extends javax.swing.JPanel {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        gradientPanel1.add(gradientPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 765, 5));
+        gradientPanel1.add(gradientPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 765, 5));
 
         startjButton.setBackground(new java.awt.Color(17, 45, 78));
         startjButton.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
@@ -125,7 +127,7 @@ public class AdminHomePanel extends javax.swing.JPanel {
                 startjButtonActionPerformed(evt);
             }
         });
-        gradientPanel1.add(startjButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 270, 50));
+        gradientPanel1.add(startjButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 320, 270, 40));
 
         electionjButton1.setBackground(new java.awt.Color(17, 45, 78));
         electionjButton1.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
@@ -136,7 +138,7 @@ public class AdminHomePanel extends javax.swing.JPanel {
                 electionjButton1ActionPerformed(evt);
             }
         });
-        gradientPanel1.add(electionjButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 290, 220, 50));
+        gradientPanel1.add(electionjButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 270, 270, 40));
 
         presidentialjCheckBox.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         presidentialjCheckBox.setForeground(new java.awt.Color(17, 45, 78));
@@ -146,7 +148,7 @@ public class AdminHomePanel extends javax.swing.JPanel {
                 presidentialjCheckBoxActionPerformed(evt);
             }
         });
-        gradientPanel1.add(presidentialjCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 390, -1, -1));
+        gradientPanel1.add(presidentialjCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 390, -1, -1));
 
         mukhtarjCheckBox.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         mukhtarjCheckBox.setForeground(new java.awt.Color(17, 45, 78));
@@ -156,7 +158,7 @@ public class AdminHomePanel extends javax.swing.JPanel {
                 mukhtarjCheckBoxActionPerformed(evt);
             }
         });
-        gradientPanel1.add(mukhtarjCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 390, -1, -1));
+        gradientPanel1.add(mukhtarjCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 390, -1, -1));
 
         municipaljCheckBox.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         municipaljCheckBox.setForeground(new java.awt.Color(17, 45, 78));
@@ -166,27 +168,42 @@ public class AdminHomePanel extends javax.swing.JPanel {
                 municipaljCheckBoxActionPerformed(evt);
             }
         });
-        gradientPanel1.add(municipaljCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 390, -1, -1));
+        gradientPanel1.add(municipaljCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 390, -1, -1));
 
         presidentialStatusjLabel.setFont(new java.awt.Font("SansSerif", 2, 12)); // NOI18N
         presidentialStatusjLabel.setForeground(new java.awt.Color(17, 45, 78));
+        presidentialStatusjLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         presidentialStatusjLabel.setText("*not started");
-        gradientPanel1.add(presidentialStatusjLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 410, 70, 20));
-
-        jLabel4.setFont(new java.awt.Font("SansSerif", 2, 12)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(17, 45, 78));
-        jLabel4.setText("*Select the election to start - finish.");
-        gradientPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 370, 400, 20));
+        gradientPanel1.add(presidentialStatusjLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 410, 90, 20));
 
         mukhtarStatusjLabel.setFont(new java.awt.Font("SansSerif", 2, 12)); // NOI18N
         mukhtarStatusjLabel.setForeground(new java.awt.Color(17, 45, 78));
+        mukhtarStatusjLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         mukhtarStatusjLabel.setText("*not started");
-        gradientPanel1.add(mukhtarStatusjLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 410, 70, 20));
+        gradientPanel1.add(mukhtarStatusjLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 410, 70, 20));
 
         municipalStatusjLabel.setFont(new java.awt.Font("SansSerif", 2, 12)); // NOI18N
         municipalStatusjLabel.setForeground(new java.awt.Color(17, 45, 78));
+        municipalStatusjLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         municipalStatusjLabel.setText("*not started");
-        gradientPanel1.add(municipalStatusjLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 410, 70, 20));
+        gradientPanel1.add(municipalStatusjLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 410, 80, 20));
+
+        removeCandidatejButton.setBackground(new java.awt.Color(17, 45, 78));
+        removeCandidatejButton.setFont(new java.awt.Font("SansSerif", 1, 22)); // NOI18N
+        removeCandidatejButton.setText("Remove Candidate");
+        removeCandidatejButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        removeCandidatejButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeCandidatejButtonActionPerformed(evt);
+            }
+        });
+        gradientPanel1.add(removeCandidatejButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 320, 220, 40));
+
+        jLabel5.setFont(new java.awt.Font("SansSerif", 2, 12)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(17, 45, 78));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("*Select the election to start - finish.");
+        gradientPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 370, 270, 20));
 
         add(gradientPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 770, 450));
     }// </editor-fold>//GEN-END:initComponents
@@ -195,9 +212,9 @@ public class AdminHomePanel extends javax.swing.JPanel {
         MainFrame.setPage("createUserPanel");
     }//GEN-LAST:event_UserjButtonActionPerformed
 
-    private void candidatejButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_candidatejButtonActionPerformed
+    private void createCandidatejButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createCandidatejButtonActionPerformed
         MainFrame.setPage("createCandidatePanel");
-    }//GEN-LAST:event_candidatejButtonActionPerformed
+    }//GEN-LAST:event_createCandidatejButtonActionPerformed
 
     private void logoutjButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutjButtonActionPerformed
         MainFrame.setPage("loginPanel");
@@ -245,16 +262,24 @@ public class AdminHomePanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_municipaljCheckBoxActionPerformed
 
+    private void removeCandidatejButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeCandidatejButtonActionPerformed
+        if (MainFrame.isMukhtarElectionStarted() || MainFrame.isMunicipalElectionStarted() || MainFrame.isPresidentialElectionStarted()) {
+            JOptionPane.showMessageDialog(this, "Elections started, you can not remove any candidate.", "Attention", JOptionPane.ERROR_MESSAGE);
+        } else {
+            MainFrame.setPage("removeCandidatePanel");
+        }
+    }//GEN-LAST:event_removeCandidatejButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton UserjButton;
-    private javax.swing.JButton candidatejButton;
+    private javax.swing.JButton createCandidatejButton;
     private javax.swing.JButton electionjButton1;
     private com.mery.votingsystem.GradientPanel gradientPanel1;
     private com.mery.votingsystem.GradientPanel gradientPanel2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JButton logoutjButton;
     private javax.swing.JLabel mukhtarStatusjLabel;
     private javax.swing.JCheckBox mukhtarjCheckBox;
@@ -262,6 +287,7 @@ public class AdminHomePanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox municipaljCheckBox;
     private javax.swing.JLabel presidentialStatusjLabel;
     private javax.swing.JCheckBox presidentialjCheckBox;
+    private javax.swing.JButton removeCandidatejButton;
     private javax.swing.JButton startjButton;
     // End of variables declaration//GEN-END:variables
 }

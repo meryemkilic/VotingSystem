@@ -7,6 +7,8 @@ package com.mery.votingsystem;
 import com.mery.votingsystem.jpa.*;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 public class MainFrame extends javax.swing.JFrame {
@@ -20,6 +22,7 @@ public class MainFrame extends javax.swing.JFrame {
     CreateCandidatePanel createCandidatePanel;
     CreateElectionPanel createElectionPanel;
     ElectionWinnersPanel electionWinnersPanel;
+    RemoveCandidatePanel removeCandidatePanel;
     static CardLayout cardLayout;
     static JPanel panelCont;
     private static boolean mukhtarElectionStarted;
@@ -55,6 +58,8 @@ public class MainFrame extends javax.swing.JFrame {
         createElectionPanel.setName("createElectionPanel");
         electionWinnersPanel = new ElectionWinnersPanel();
         electionWinnersPanel.setName("electionWinnersPanel");
+        removeCandidatePanel= new RemoveCandidatePanel();
+        removeCandidatePanel.setName("removeCandidatePanel");
         panelCont.add(loginPanel, "loginPanel");
         panelCont.add(adminPanel, "adminPanel");
         panelCont.add(userPanel, "userPanel");
@@ -63,8 +68,11 @@ public class MainFrame extends javax.swing.JFrame {
         panelCont.add(createCandidatePanel, "createCandidatePanel");
         panelCont.add(createElectionPanel, "createElectionPanel");
         panelCont.add(electionWinnersPanel, "electionWinnersPanel");
+        panelCont.add(removeCandidatePanel,"removeCandidatePanel");
         cardLayout.show(panelCont, "loginPanel");
-
+        
+        ImageIcon icon2 = new ImageIcon("C:\\Users\\merye\\Downloads\\REPUBLIC OF TÜRKİYE.png");
+        this.setIconImage(icon2.getImage());
     }
 
     public static void setPage(String panelName) {
